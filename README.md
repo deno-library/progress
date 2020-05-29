@@ -122,6 +122,7 @@ More screenshots in the `screenshots` folder.
 
 ## to do
 get tty columns
+> waiting for Deno to support 'get tty columns'
 ```ts
   private get ttyColumns(): number {
     // to do

@@ -147,7 +147,7 @@ export default class ProgressBar {
   }
 
   private get ttyColumns(): number {
-    // to do
+    // waiting for Deno to support 'get tty columns'
     return 100;
   }
 
