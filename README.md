@@ -100,7 +100,7 @@ interface ProgressBar {
    * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
-  render(completed: number, total? number): void;
+  render(completed: number, options? renderOptions): void;
 
   /**
    * console: interrupt the progress bar and write a message above it
