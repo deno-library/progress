@@ -14,7 +14,7 @@ let completed = 0;
 function downloading() {
   if (completed <= total) {
     // Can also be set in the constructor
-    progress.render(completed++, total);
+    progress.render(completed++, { total });
 
     setTimeout(function () {
       downloading();
