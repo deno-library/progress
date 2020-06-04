@@ -68,10 +68,19 @@ interface ConstructorOptions {
   display?: string
 }
 
+interface renderOptions {
+  title?: string,
+  total?: number,
+  complete?: string,
+  incomplete?: string,
+}
+
 interface ProgressBar {
-  /**
+  /**  
+   * Title, total, complete, incomplete, can also be set or changed in the render method 
+   * 
    * @param title Progress bar title, default: ''
-   * @param total total number of ticks to complete, Can also be set within the render method
+   * @param total total number of ticks to complete
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
    * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
@@ -85,7 +94,11 @@ interface ProgressBar {
    * render: render the progress bar
    * 
    * @param completed Completed value
-   * @param total total number of ticks to complete, can also be set in the constructor
+   * @param options Optional parameters
+   * @param options.title Progress bar title
+   * @param options.total Progress bar title
+   * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
+   * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
   render(completed: number, total? number): void;
 
@@ -117,6 +130,15 @@ backword
 
 console 
 ![console](./screenshots/console.gif)  
+
+complete 
+![console](./screenshots/complete.gif)  
+
+change color 
+![console](./screenshots/changeColor.gif)  
+
+change background color 
+![console](./screenshots/changeColor2.gif)  
 
 More screenshots in the `screenshots` folder.
 
