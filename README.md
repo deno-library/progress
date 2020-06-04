@@ -4,11 +4,7 @@ ProgressBar in terminal for deno
 ## Useage  
 * simple example
 ```ts
-// Get the latest code
-import ProgressBar from "https://deno.land/x/progress/mod.ts";
-
-// Get the specified version code
-// import ProgressBar from "https://deno.land/x/progress@v1.0.0/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.0.0/mod.ts";
 
 const title = 'downloading:';
 const total = 100;
@@ -30,7 +26,7 @@ downloading();
 ```  
 * complex example
 ```ts
-import ProgressBar from "https://deno.land/x/progress/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.0.0/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
