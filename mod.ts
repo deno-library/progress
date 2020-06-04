@@ -4,8 +4,15 @@ import {
 } from "https://deno.land/std@0.50.0/fmt/colors.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
+const isWindow = Deno.build.os === 'windows';
 
-interface Options {
+const enum Direction {
+  left,
+  right,
+  all
+}
+
+interface constructorOptions {
   title?: string,
   total?: number,
   width?: number,
@@ -16,10 +23,11 @@ interface Options {
   display?: string
 }
 
-const enum Direction {
-  left,
-  right,
-  all
+interface renderOptions {
+  title?: string,
+  total?: number,
+  complete?: string,
+  incomplete?: string,
 }
 
 export default class ProgressBar {
@@ -40,8 +48,10 @@ export default class ProgressBar {
   private encoder = new TextEncoder();
 
   /**
+   * Title, total, complete, incomplete, can also be set or changed in the render method 
+   * 
    * @param title Progress bar title, default: ''
-   * @param total total number of ticks to complete, Can also be set within the render method
+   * @param total total number of ticks to complete, 
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
    * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
@@ -49,7 +59,7 @@ export default class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    */
-  constructor({ title = '', total, width = 50, complete = bgGreen(' '), incomplete = bgWhite(' '), clear = false, interval, display }: Options = {}) {
+  constructor({ title = '', total, width = 50, complete = bgGreen(' '), incomplete = bgWhite(' '), clear = false, interval, display }: constructorOptions = {}) {
     this.title = title;
     this.total = total;
     this.width = width;
@@ -61,18 +71,23 @@ export default class ProgressBar {
   }
 
   /**
-   * "render" the progress bar with completed and optional `total`
+   * "render" the progress bar
    * 
-   * @param completed Completed value
-   * @param total total number of ticks to complete, Can also be set in the constructor
+   * - `completed` - Completed value
+   * - `options` - Optional parameters
+   *   - `title` - Progress bar title
+   *   - `total` - total number of ticks to complete
+   *   - `complete` - completion character, If you want to change at a certain moment. For example, it turns red at 20%
+   *   - `incomplete` - incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
-  render(completed: number, total = this.total): void {
+  render(completed: number, options: renderOptions = {}): void {
     if (!isTTY) return;
 
     completed = +completed;
     if (!Number.isInteger(completed)) throw new Error(`completed must be 'number'`);
     if (completed < 0) throw new Error(`completed must greater than or equal to 0`);
 
+    const total = options.total || this.total;
     if (total === undefined) throw new Error(`total required`);
     if (!Number.isInteger(total)) throw new Error(`total must be 'number'`);
 
@@ -89,7 +104,7 @@ export default class ProgressBar {
 
     // :title :percent :bar :time :completed/:total
     let str = this.display
-      .replace(':title', this.title)
+      .replace(':title', options.title || this.title)
       .replace(':time', this.time)
       .replace(':percent', percent)
       .replace(':completed', completed + '')
@@ -97,14 +112,14 @@ export default class ProgressBar {
 
     // compute the available space (non-zero) for the bar
     let availableSpace = Math.max(0, this.ttyColumns - str.replace(':bar', '').length);
-    if (availableSpace && Deno.build.os === 'windows') availableSpace -= 1;
+    if (availableSpace && isWindow) availableSpace -= 1;
 
     const width = Math.min(this.width, availableSpace);
 
     // :bar
     const completeLength = Math.round(width * completed / total);
-    const complete = new Array(completeLength).fill(this.complete).join('');
-    const incomplete = new Array(width - completeLength).fill(this.incomplete).join('');
+    const complete = new Array(completeLength).fill(options.complete || this.complete).join('');
+    const incomplete = new Array(width - completeLength).fill(options.incomplete || this.incomplete).join('');
 
     str = str.replace(':bar', complete + incomplete);
 
@@ -115,7 +130,7 @@ export default class ProgressBar {
 
     if (completed >= total) this.end();
   }
-  
+
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
