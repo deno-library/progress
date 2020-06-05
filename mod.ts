@@ -1,7 +1,7 @@
 import {
   bgGreen,
   bgWhite,
-} from "https://deno.land/std@0.50.0/fmt/colors.ts";
+} from "https://deno.land/std@0.55.0/fmt/colors.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === 'windows';
