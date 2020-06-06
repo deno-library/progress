@@ -1,7 +1,7 @@
 # ProgressBar
 ProgressBar in terminal for deno
 
-## Useage  
+## Usage  
 * simple example
 ```ts
 import ProgressBar from "https://deno.land/x/progress@v1.0.0/mod.ts";
@@ -62,6 +62,7 @@ interface ConstructorOptions {
   total?: number,
   width?: number,
   complete?: string,
+  preciseBar?: string[],
   incomplete?: string,
   clear?: boolean,
   interval?: number,
@@ -72,6 +73,7 @@ interface renderOptions {
   title?: string,
   total?: number,
   complete?: string,
+  preciseBar?: string[],
   incomplete?: string,
 }
 
@@ -83,6 +85,7 @@ interface ProgressBar {
    * @param total total number of ticks to complete
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
+   * @param preciseBar in between character, default: [colors.bgGreen(' ')], can use any string array
    * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
    * @param clear  clear the bar on completion, default: false
    * @param interval  minimum time between updates in milliseconds, default: 16
@@ -96,7 +99,7 @@ interface ProgressBar {
    * @param completed Completed value
    * @param options Optional parameters
    * @param options.title Progress bar title
-   * @param options.total Progress bar title
+   * @param options.total Progress bar total
    * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
@@ -126,7 +129,7 @@ clear
 ![clear](./screenshots/clear.gif) 
 
 backword 
-![backword](./screenshots/backword.gif)  
+![backward](./screenshots/backward.gif)  
 
 console 
 ![console](./screenshots/console.gif)  
@@ -138,7 +141,7 @@ change color
 ![console](./screenshots/changeColor.gif)  
 
 change background color 
-![console](./screenshots/changeColor2.gif)  
+![console](./screenshots/changeColor2.gif)
 
 More screenshots in the `screenshots` folder.
 
