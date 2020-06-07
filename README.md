@@ -122,27 +122,51 @@ interface ProgressBar {
 
 ## Screenshots
 
-normal  
+<center>Standard use</center>
+
 ![normal](./screenshots/title.gif) 
-<figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption> 
 
-clear  
-![clear](./screenshots/clear.gif) 
+<center>Change how the order and look of elements</center>
 
-backword 
-![backward](./screenshots/backward.gif)  
+![console](./screenshots/display.gif)  
 
-console 
-![console](./screenshots/console.gif)  
+<center>Change character color</center>
 
-complete 
-![console](./screenshots/complete.gif)  
-
-change color 
 ![console](./screenshots/changeColor.gif)  
 
-change background color 
+<center>Change background color</center>
+
 ![console](./screenshots/changeBgColor.gif)
+
+<center>Color that changes with progress</center>
+
+![console](./screenshots/colorProgression.gif)
+
+<center>Precise bar with more intermediate states</center>
+
+![console](./screenshots/preciseBar.gif)
+
+<center>Wider bar</center>
+
+![console](./screenshots/width.gif)
+
+<center>Clear the bar once finished</center>
+ 
+![clear](./screenshots/clear.gif) 
+
+<center>Backward progress</center>
+
+![backward](./screenshots/backward.gif)  
+
+<center>Log some messages</center>
+
+![console](./screenshots/console.gif) 
+
+<center>Log some messages next to the bar</center>
+
+![console](./screenshots/info.gif)  
+
+
 
 More screenshots in the `screenshots` folder.
 
