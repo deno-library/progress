@@ -9,6 +9,7 @@ const total = 100;
 const progress = new ProgressBar({
   total,
   // Note: on Windows, if UTF-8 is not the default encoding for the terminal, such characters will not be displayed as expected.
+  // ==> here
   preciseBar: [
     bgWhite(green("▏")),
     bgWhite(green("▎")),
@@ -18,14 +19,14 @@ const progress = new ProgressBar({
     bgWhite(green("▊")),
     bgWhite(green("▉")),
   ],
+  // <== here
 });
 
 let completed = 0;
 
 function downloading() {
   if (completed <= total) {
-    // Can also be set in the constructor
-    progress.render(completed++, { total });
+    progress.render(completed++);
 
     setTimeout(function () {
       downloading();

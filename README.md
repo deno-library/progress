@@ -1,5 +1,6 @@
-# ProgressBar
-ProgressBar in terminal for deno
+![logo](screenshots/logo.png)
+
+Progress bar in terminal for deno
 
 ## Usage  
 * simple example
@@ -122,26 +123,51 @@ interface ProgressBar {
 
 ## Screenshots
 
-normal  
-![normal](./screenshots/normal.gif)  
+<center>Standard use</center>
 
-clear  
-![clear](./screenshots/clear.gif) 
+![normal](./screenshots/title.gif) 
 
-backword 
-![backward](./screenshots/backward.gif)  
+<center>Change how the order and look of elements</center>
 
-console 
-![console](./screenshots/console.gif)  
+![console](./screenshots/display.gif)  
 
-complete 
-![console](./screenshots/complete.gif)  
+<center>Change character color</center>
 
-change color 
 ![console](./screenshots/changeColor.gif)  
 
-change background color 
-![console](./screenshots/changeColor2.gif)
+<center>Change background color</center>
+
+![console](./screenshots/changeBgColor.gif)
+
+<center>Color that changes with progress</center>
+
+![console](./screenshots/colorProgression.gif)
+
+<center>Precise bar with more intermediate states</center>
+
+![console](./screenshots/preciseBar.gif)
+
+<center>Wider bar</center>
+
+![console](./screenshots/width.gif)
+
+<center>Clear the bar once finished</center>
+ 
+![clear](./screenshots/clear.gif) 
+
+<center>Backward progress</center>
+
+![backward](./screenshots/backward.gif)  
+
+<center>Log some messages</center>
+
+![console](./screenshots/console.gif) 
+
+<center>Log some messages next to the bar</center>
+
+![console](./screenshots/info.gif)  
+
+
 
 More screenshots in the `screenshots` folder.
 

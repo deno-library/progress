@@ -1,11 +1,11 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
 const total = 100;
 
 const progress = new ProgressBar({
   total,
   // ==> here
-  clear: true
+  clear: true,
   // <== here
 });
 
@@ -17,7 +17,7 @@ function run() {
 
     setTimeout(function () {
       run();
-    }, 50)
+    }, 50);
   }
 }
 
