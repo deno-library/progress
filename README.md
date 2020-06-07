@@ -1,5 +1,6 @@
-# ProgressBar
-ProgressBar in terminal for deno
+![logo](screenshots/logo.png)
+
+Progress bar in terminal for deno
 
 ## Usage  
 * simple example
