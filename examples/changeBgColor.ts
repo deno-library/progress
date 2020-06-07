@@ -1,26 +1,25 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 import {
-  bgGreen,
-  bgWhite,
   bgMagenta,
-  bgCyan
+  bgCyan,
 } from "https://deno.land/std@0.50.0/fmt/colors.ts";
 
 const total = 100;
 
 const progress = new ProgressBar({
-  total
+  total,
 });
 
 let completed = 0;
 
 function run() {
   if (completed <= total) {
-
     if (completed >= 20) {
       progress.render(completed++, {
-        complete: bgMagenta(' '),
-        incomplete: bgCyan(' ')
+        // ==> here
+        complete: bgMagenta(" "),
+        incomplete: bgCyan(" "),
+        // <== here
       });
     } else {
       progress.render(completed++);
@@ -28,7 +27,7 @@ function run() {
 
     setTimeout(function () {
       run();
-    }, 50)
+    }, 50);
   }
 }
 

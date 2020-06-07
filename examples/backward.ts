@@ -1,9 +1,8 @@
-
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
 const progress = new ProgressBar({
-  title: 'backward',
-  total: 100
+  title: "backward",
+  total: 100,
 });
 
 let completed = 0;
@@ -18,7 +17,9 @@ function forward() {
 }
 
 function backward() {
+  // ==> here
   progress.render(--completed);
+  // <== here
   if (completed == 0) {
     progress.end();
   } else {

@@ -1,14 +1,14 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
-const title = 'interval:';
+const title = "interval:";
 const total = 100;
 
 const progress = new ProgressBar({
   title,
   total,
-  // here ==> 
+  // here ==>
   // width: 20
-  width: 1000  // longer than the terminal width
+  width: 1000, // longer than the terminal width
   // <== here
 });
 
@@ -20,7 +20,7 @@ function downloading() {
 
     setTimeout(function () {
       downloading();
-    }, 100)
+    }, 100);
   }
 }
 

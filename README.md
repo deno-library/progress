@@ -123,7 +123,8 @@ interface ProgressBar {
 ## Screenshots
 
 normal  
-![normal](./screenshots/normal.gif)  
+![normal](./screenshots/title.gif) 
+<figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption> 
 
 clear  
 ![clear](./screenshots/clear.gif) 
@@ -141,7 +142,7 @@ change color
 ![console](./screenshots/changeColor.gif)  
 
 change background color 
-![console](./screenshots/changeColor2.gif)
+![console](./screenshots/changeBgColor.gif)
 
 More screenshots in the `screenshots` folder.
 

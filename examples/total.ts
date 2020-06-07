@@ -1,6 +1,6 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
-const title = 'total test';
+const title = "total test";
 const total = 100;
 
 const progress = new ProgressBar({
@@ -14,11 +14,13 @@ let completed = 0;
 function downloading() {
   if (completed <= total) {
     // Can also be set in the constructor
+    // ==> here
     progress.render(completed++, { total });
+    // <== here
 
     setTimeout(function () {
       downloading();
-    }, 100)
+    }, 100);
   }
 }
 
