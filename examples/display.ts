@@ -1,17 +1,17 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
 const total = 100;
 
 const progress = new ProgressBar({
   total,
-  complete: '=',
-  incomplete: '-',
-  // here ==> 
+  complete: "=",
+  incomplete: "-",
+  // here ==>
   // display: ':bar'
   // display: ':bar :time'
   // display: '[:bar]'
   // display: 'hello :bar world'
-  display: ':completed/:total hello :time [:bar] :percent'
+  display: ":completed/:total hello :time [:bar] :percent",
   // <== here
 });
 
@@ -23,7 +23,7 @@ function run() {
 
     setTimeout(function () {
       run();
-    }, 100)
+    }, 100);
   }
 }
 

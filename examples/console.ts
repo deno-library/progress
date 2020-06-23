@@ -1,11 +1,11 @@
-import ProgressBar from '../mod.ts'
+import ProgressBar from "../mod.ts";
 
-const title = 'interval:';
+const title = "interval:";
 const total = 100;
 
 const progress = new ProgressBar({
   title,
-  total
+  total,
 });
 
 let completed = 0;
@@ -19,7 +19,7 @@ function downloading() {
 
     setTimeout(function () {
       downloading();
-    }, 50)
+    }, 50);
   }
 }
 
