@@ -1,6 +1,10 @@
 ![logo](screenshots/logo.png)
 
-Progress bar in terminal for deno
+<p align="center">
+  Progress bar in terminal for deno
+</p>
+
+[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/progress)
 
 ## Usage  
 * simple example
@@ -123,47 +127,47 @@ interface ProgressBar {
 
 ## Screenshots
 
-<center>Standard use</center>
+Standard use
 
 ![normal](./screenshots/title.gif) 
 
-<center>Change how the order and look of elements</center>
+Change how the order and look of elements
 
 ![console](./screenshots/display.gif)  
 
-<center>Change character color</center>
+Change character color
 
 ![console](./screenshots/changeColor.gif)  
 
-<center>Change background color</center>
+Change background color
 
 ![console](./screenshots/changeBgColor.gif)
 
-<center>Color that changes with progress</center>
+Color that changes with progress
 
 ![console](./screenshots/colorProgression.gif)
 
-<center>Precise bar with more intermediate states</center>
+Precise bar with more intermediate states
 
 ![console](./screenshots/preciseBar.gif)
 
-<center>Wider bar</center>
+Wider bar
 
 ![console](./screenshots/width.gif)
 
-<center>Clear the bar once finished</center>
+Clear the bar once finished
  
 ![clear](./screenshots/clear.gif) 
 
-<center>Backward progress</center>
+Backward progress
 
 ![backward](./screenshots/backward.gif)  
 
-<center>Log some messages</center>
+Log some messages
 
 ![console](./screenshots/console.gif) 
 
-<center>Log some messages next to the bar</center>
+Log some messages next to the bar
 
 ![console](./screenshots/info.gif)  
 
