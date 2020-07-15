@@ -18,7 +18,7 @@ deno run --unstable ./examples/width.unstable.ts
 ## Usage  
 * simple example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.1.0/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.1.1/mod.ts";
 
 const title = 'downloading:';
 const total = 100;
@@ -40,7 +40,7 @@ downloading();
 ```  
 * complex example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.1.0/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.1.1/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
