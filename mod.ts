@@ -164,7 +164,7 @@ export default class ProgressBar {
 
     str = str.replace(":bar", complete + precise + incomplete);
 
-    if (this.lastStr !== str) {
+    if (str !== this.lastStr) {
       this.write(str);
       this.lastStr = str;
     }
