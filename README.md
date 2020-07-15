@@ -4,7 +4,16 @@
   Progress bar in terminal for deno
 </p>
 
-[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/progress)
+[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/progress)  
+
+## Update  
+
+### v1.1.1 / 2020.07.15  
+changes: add mod.unstable.ts and ./exmaples/width.unstable.ts
+: Deno v1.2.0 started to support tty column, but is unstable
+```bash
+deno run --unstable ./examples/width.unstable.ts
+```
 
 ## Usage  
 * simple example
@@ -171,16 +180,4 @@ Log some messages next to the bar
 
 ![console](./screenshots/info.gif)  
 
-
-
 More screenshots in the `screenshots` folder.
-
-## to do
-get tty columns
-> waiting for Deno to support 'get tty columns'
-```ts
-  private get ttyColumns(): number {
-    // to do
-    return 100;
-  }
-```
