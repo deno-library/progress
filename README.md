@@ -8,9 +8,9 @@
 
 ## Update  
 
-### v1.1.1 / 2020.07.15  
-changes: add mod.unstable.ts and ./exmaples/width.unstable.ts
-: Deno v1.2.0 started to support tty column, but is unstable
+### v1.1.1 - 2020.07.15  
+changes: add mod.unstable.ts and ./exmaples/width.unstable.ts  
+> Deno v1.2.0 started to support tty column, but is unstable
 ```bash
 deno run --unstable ./examples/width.unstable.ts
 ```
