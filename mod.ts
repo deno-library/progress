@@ -181,6 +181,8 @@ export default class ProgressBar {
     if (this.clear) {
       this.stdoutWrite("\r");
       this.clearLine();
+    } else {
+      this.breakLine();
     }
     this.showCursor();
   }
