@@ -2,7 +2,7 @@ import ProgressBar from "../mod.ts";
 import {
   yellow,
   green,
-} from "https://deno.land/std@0.50.0/fmt/colors.ts";
+} from "https://deno.land/std@0.74.0/fmt/colors.ts";
 
 const total = 100;
 
