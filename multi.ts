@@ -84,8 +84,8 @@ export class MultiProgressBar {
    *   - `completed` completed value
    *   - `total` optional, total number of ticks to complete, default: 100
    *   - `text` optional, text displayed per ProgressBar, default: ''
-   *   - `complete` - completion character
-   *   - `incomplete` - incomplete character
+   *   - `complete` - optional, completion character
+   *   - `incomplete` - optional, incomplete character
    **/
   render(bars: Array<renderOptions>): void {
     if (this.#end || !isTTY) return;
