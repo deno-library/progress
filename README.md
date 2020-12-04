@@ -84,7 +84,7 @@ interface renderOptions {
   complete?: string;
   incomplete?: string;
 }
-class ProgressBar {
+class MultiProgressBar {
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method 
    * 
@@ -108,7 +108,7 @@ class ProgressBar {
    *   - `complete` - completion character
    *   - `incomplete` - incomplete character
    **/
-  render(completed: number, options? renderOptions): void;
+  render(bars: Array<renderOptions>): void;
 
   /**
    * console: interrupt the progress bar and write a message above it
