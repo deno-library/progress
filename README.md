@@ -8,6 +8,10 @@
 
 ## Update  
 
+### v1.2.0 - 2020.07.15  
+Add support for "Render multiple progress bars"  
+[Thanks "shixiaobao17145" for the great idea](https://github.com/deno-library/progress/issues/7).  
+
 ### v1.1.1 - 2020.07.15  
 changes: add mod.unstable.ts and ./exmaples/width.unstable.ts  
 > Deno v1.2.0 started to support tty column, but is unstable
@@ -16,9 +20,108 @@ deno run --unstable ./examples/width.unstable.ts
 ```
 
 ## Usage  
+
+### Multiple progress bars
+* example  
+```ts 
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.0/mod.ts";
+
+const title = 'download files';
+const total = 100;
+
+const bars = new MultiProgressBar({
+  title,
+  // clear: true,
+  complete: '=',
+  incomplete: '-',
+  display: '[:bar] :text :percent :time :completed/:total'
+});
+
+let completed1 = 0;
+let completed2 = 0;
+
+function downloading() {
+  if (completed1 <= total || completed2 <= total) {
+    completed1 += 1
+    completed2 += 2
+    bars.render([
+      { completed: completed1, total, text: "file1" },
+      { completed: completed2, total, text: "file2" }
+    ]);
+
+    setTimeout(function () {
+      downloading();
+    }, 100)
+  }
+}
+
+downloading();
+```  
+
+* interface  
+```ts
+interface constructorOptions {
+  title?: string;
+  width?: number;
+  complete?: string;
+  preciseBar?: string[];
+  incomplete?: string;
+  clear?: boolean;
+  interval?: number;
+  display?: string;
+}
+interface renderOptions {
+  completed: number;
+  text?: string;
+  total?: number;
+  complete?: string;
+  incomplete?: string;
+}
+class ProgressBar {
+  /**
+   * Title, total, complete, incomplete, can also be set or changed in the render method 
+   * 
+   * @param title Progress bar title, default: ''
+   * @param width the displayed width of the progress, default: 50
+   * @param complete completion character, default: colors.bgGreen(' '), can use any string
+   * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
+   * @param clear  clear the bar on completion, default: false
+   * @param interval  minimum time between updates in milliseconds, default: 16
+   * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+   */
+  constructor(optopns: ConstructorOptions): void;
+
+  /**
+   * "render" the progress bar
+   * 
+   * - `bars` progress bars
+   *   - `completed` completed value
+   *   - `total` optional, total number of ticks to complete, default: 100
+   *   - `text` optional, text displayed per ProgressBar, default: ''
+   *   - `complete` - completion character
+   *   - `incomplete` - incomplete character
+   **/
+  render(completed: number, options? renderOptions): void;
+
+  /**
+   * console: interrupt the progress bar and write a message above it
+   * 
+   * @param message The message to write
+   */
+  console(message: string): void;
+
+  /**
+   * end: end a progress bar.
+   * No need to call in most cases, unless you want to end before 100%
+   */
+  end(): void;
+}
+```  
+
+### Single progress bar
 * simple example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.1.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.0/mod.ts";
 
 const title = 'downloading:';
 const total = 100;
@@ -40,7 +143,7 @@ downloading();
 ```  
 * complex example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.1.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.0/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -91,7 +194,7 @@ interface renderOptions {
   incomplete?: string,
 }
 
-interface ProgressBar {
+class ProgressBar {
   /**  
    * Title, total, complete, incomplete, can also be set or changed in the render method 
    * 
@@ -137,6 +240,10 @@ interface ProgressBar {
 ## Screenshots
 
 Standard use
+
+![normal](./screenshots/title.gif) 
+
+Multi-line progress bar output in terminal
 
 ![normal](./screenshots/title.gif) 
 

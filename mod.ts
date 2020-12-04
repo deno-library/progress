@@ -1,7 +1,5 @@
-import {
-  bgGreen,
-  bgWhite,
-} from "https://deno.land/std@0.74.0/fmt/colors.ts";
+import { bgGreen, bgWhite } from "https://deno.land/std@0.74.0/fmt/colors.ts";
+export { MultiProgressBar } from "./multi.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
@@ -71,7 +69,7 @@ export default class ProgressBar {
       preciseBar = [],
       incomplete = bgWhite(" "),
       clear = false,
-      interval,
+      interval = 16,
       display,
     }: constructorOptions = {},
   ) {
@@ -82,40 +80,31 @@ export default class ProgressBar {
     this.preciseBar = preciseBar.concat(complete);
     this.incomplete = incomplete;
     this.clear = clear;
-    this.interval = interval ?? 16;
+    this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
   }
 
   /**
    * "render" the progress bar
    * 
-   * - `completed` - Completed value
-   * - `options` - Optional parameters
-   *   - `title` - Progress bar title
+   * - `completed` - completed value
+   * - `options` - optional parameters
+   *   - `title` - progress bar title
    *   - `total` - total number of ticks to complete
    *   - `complete` - completion character, If you want to change at a certain moment. For example, it turns red at 20%
    *   - `incomplete` - incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
   render(completed: number, options: renderOptions = {}): void {
-    if (!isTTY) return;
+    if (this.isCompleted || !isTTY) return;
 
-    completed = +completed;
-    if (!Number.isInteger(completed)) {
-      throw new Error(`completed must be 'number'`);
-    }
     if (completed < 0) {
       throw new Error(`completed must greater than or equal to 0`);
     }
 
-    const total = options.total ?? this.total;
-    if (total === undefined) throw new Error(`total required`);
-    if (!Number.isInteger(total)) throw new Error(`total must be 'number'`);
-
-    if (this.isCompleted) console.warn("Called after the end");
-
+    const total = options.total ?? this.total ?? 100;
     const now = Date.now();
     const ms = now - this.lastRender;
-    if (ms < this.interval! && completed < total) return;
+    if (ms < this.interval && completed < total) return;
 
     this.lastRender = now;
     this.time = ((now - this.start) / 1000).toFixed(1) + "s";
