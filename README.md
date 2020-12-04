@@ -45,8 +45,15 @@ function downloading() {
     completed1 += 1
     completed2 += 2
     bars.render([
-      { completed: completed1, total, text: "file1" },
-      { completed: completed2, total, text: "file2" }
+      {
+        completed: completed1,
+        total,
+        text: "file1",
+        // You can also change the style of the progress bar
+        // complete: "*",
+        // incomplete: ".",
+      },
+      { completed: completed2, total, text: "file2" },
     ]);
 
     setTimeout(function () {
