@@ -8,7 +8,7 @@
 
 ## Update  
 
-### v1.2.0 - 2020.07.15  
+### v1.2.0 - 2020.12.5  
 Add support for "Render multiple progress bars"  
 [Thanks "shixiaobao17145" for the great idea](https://github.com/deno-library/progress/issues/7).  
 
