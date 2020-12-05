@@ -252,7 +252,7 @@ Standard use
 
 Multi-line progress bar output in terminal
 
-![normal](./screenshots/title.gif) 
+![normal](./screenshots/multi.gif) 
 
 Change how the order and look of elements
 
