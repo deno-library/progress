@@ -24,7 +24,7 @@ deno run --unstable ./examples/width.unstable.ts
 ### Multiple progress bars
 * example  
 ```ts 
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.2/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.3/mod.ts";
 
 const title = 'download files';
 const total = 100;
@@ -128,7 +128,7 @@ class MultiProgressBar {
 ### Single progress bar
 * simple example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.2/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.3/mod.ts";
 
 const title = 'downloading:';
 const total = 100;
@@ -150,7 +150,7 @@ downloading();
 ```  
 * complex example
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.2/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.3/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
