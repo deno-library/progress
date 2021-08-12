@@ -1,20 +1,22 @@
+# ProgressBar
+
+ProgressBar in terminal for deno
+
 ![logo](screenshots/logo.png)
-
-<p align="center">
-  Progress bar in terminal for deno
-</p>
-
-[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/progress)  
 
 ## Update  
 
 ### v1.2.0 - 2020.12.5  
+
 Add support for "Render multiple progress bars"  
 [Thanks "shixiaobao17145" for the great idea](https://github.com/deno-library/progress/issues/7).  
 
 ### v1.1.1 - 2020.07.15  
+
 changes: add mod.unstable.ts and ./exmaples/width.unstable.ts  
+
 > Deno v1.2.0 started to support tty column, but is unstable
+
 ```bash
 deno run --unstable ./examples/width.unstable.ts
 ```
@@ -22,23 +24,25 @@ deno run --unstable ./examples/width.unstable.ts
 ## Usage  
 
 ### Multiple progress bars
-* example  
-```ts 
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.3/mod.ts";
 
-const title = 'download files';
-const total = 100;
+* example
+
+```ts
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.4/mod.ts"; 
+
+const title = 'download files'; 
+const total = 100; 
 
 const bars = new MultiProgressBar({
-  title,
-  // clear: true,
-  complete: '=',
-  incomplete: '-',
+  title, 
+  // clear: true, 
+  complete: '=', 
+  incomplete: '-', 
   display: '[:bar] :text :percent :time :completed/:total'
-});
+}); 
 
-let completed1 = 0;
-let completed2 = 0;
+let completed1 = 0; 
+let completed2 = 0; 
 
 function downloading() {
   if (completed1 <= total || completed2 <= total) {
@@ -62,16 +66,16 @@ function downloading() {
   }
 }
 
-downloading();
-```  
+downloading(); 
+```
 
 * interface  
+
 ```ts
 interface constructorOptions {
   title?: string;
   width?: number;
   complete?: string;
-  preciseBar?: string[];
   incomplete?: string;
   clear?: boolean;
   interval?: number;
@@ -126,9 +130,11 @@ class MultiProgressBar {
 ```  
 
 ### Single progress bar
+
 * simple example
+
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.4/mod.ts";
 
 const title = 'downloading:';
 const total = 100;
@@ -147,10 +153,12 @@ function downloading() {
   }
 }
 downloading();
-```  
+```
+
 * complex example
+
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.4/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -177,28 +185,30 @@ function run() {
 }
 run();
 ```
+
 More examples in the `examples` folder.
 
 ## interface
+
 ```ts
 interface ConstructorOptions {
-  title?: string,
-  total?: number,
-  width?: number,
-  complete?: string,
-  preciseBar?: string[],
-  incomplete?: string,
-  clear?: boolean,
-  interval?: number,
+  title?: string, 
+  total?: number, 
+  width?: number, 
+  complete?: string, 
+  preciseBar?: string[], 
+  incomplete?: string, 
+  clear?: boolean, 
+  interval?: number, 
   display?: string
 }
 
 interface renderOptions {
-  title?: string,
-  total?: number,
-  complete?: string,
-  preciseBar?: string[],
-  incomplete?: string,
+  title?: string, 
+  total?: number, 
+  complete?: string, 
+  preciseBar?: string[], 
+  incomplete?: string, 
 }
 
 class ProgressBar {
@@ -215,7 +225,7 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    */
-  constructor(optopns: ConstructorOptions): void;
+  constructor(optopns: ConstructorOptions): void; 
 
   /**
    * render: render the progress bar
@@ -227,20 +237,20 @@ class ProgressBar {
    * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
-  render(completed: number, options? renderOptions): void;
+  render(completed: number, options? renderOptions): void; 
 
   /**
    * console: interrupt the progress bar and write a message above it
    * 
    * @param message The message to write
    */
-  console(message: string): void;
+  console(message: string): void; 
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void;
+  end(): void; 
 }
 ```  
 
@@ -248,19 +258,19 @@ class ProgressBar {
 
 Standard use
 
-![normal](./screenshots/title.gif) 
+![normal](./screenshots/title.gif)
 
 Multi-line progress bar output in terminal
 
-![normal](./screenshots/multi.gif) 
+![normal](./screenshots/multi.gif)
 
 Change how the order and look of elements
 
-![console](./screenshots/display.gif)  
+![console](./screenshots/display.gif)
 
 Change character color
 
-![console](./screenshots/changeColor.gif)  
+![console](./screenshots/changeColor.gif)
 
 Change background color
 
@@ -279,19 +289,19 @@ Wider bar
 ![console](./screenshots/width.gif)
 
 Clear the bar once finished
- 
-![clear](./screenshots/clear.gif) 
+
+![clear](./screenshots/clear.gif)
 
 Backward progress
 
-![backward](./screenshots/backward.gif)  
+![backward](./screenshots/backward.gif)
 
 Log some messages
 
-![console](./screenshots/console.gif) 
+![console](./screenshots/console.gif)
 
 Log some messages next to the bar
 
-![console](./screenshots/info.gif)  
+![console](./screenshots/info.gif)
 
 More screenshots in the `screenshots` folder.

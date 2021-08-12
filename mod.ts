@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite } from "https://deno.land/std@0.79.0/fmt/colors.ts";
+import { bgGreen, bgWhite } from "./deps.ts";
 export { MultiProgressBar } from "./multi.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);

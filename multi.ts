@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite } from "https://deno.land/std@0.79.0/fmt/colors.ts";
+import { bgGreen, bgWhite } from "./deps.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
@@ -7,7 +7,6 @@ interface constructorOptions {
   title?: string;
   width?: number;
   complete?: string;
-  preciseBar?: string[];
   incomplete?: string;
   clear?: boolean;
   interval?: number;
@@ -25,7 +24,6 @@ interface renderOptions {
 export class MultiProgressBar {
   width: number;
   complete: string;
-  preciseBar: string[];
   incomplete: string;
   clear: boolean;
   interval: number;
@@ -57,7 +55,6 @@ export class MultiProgressBar {
       title = "",
       width = 50,
       complete = bgGreen(" "),
-      preciseBar = [],
       incomplete = bgWhite(" "),
       clear = false,
       interval,
@@ -70,7 +67,6 @@ export class MultiProgressBar {
     }
     this.width = width;
     this.complete = complete;
-    this.preciseBar = preciseBar.concat(complete);
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval ?? 16;
