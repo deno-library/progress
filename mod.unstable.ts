@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite } from "./deps.ts";
+import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
@@ -48,10 +48,10 @@ export default class ProgressBar {
   private encoder = new TextEncoder();
 
   /**
-   * Title, total, complete, incomplete, can also be set or changed in the render method 
-   * 
+   * Title, total, complete, incomplete, can also be set or changed in the render method
+   *
    * @param title Progress bar title, default: ''
-   * @param total total number of ticks to complete, 
+   * @param total total number of ticks to complete,
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
    * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
@@ -85,7 +85,7 @@ export default class ProgressBar {
 
   /**
    * "render" the progress bar
-   * 
+   *
    * - `completed` - Completed value
    * - `options` - Optional parameters
    *   - `title` - Progress bar title
@@ -186,7 +186,7 @@ export default class ProgressBar {
 
   /**
    * interrupt the progress bar and write a message above it
-   * 
+   *
    * @param message The message to write
    */
   console(message: string | number): void {
@@ -210,7 +210,7 @@ export default class ProgressBar {
   }
 
   private stdoutWrite(msg: string) {
-    Deno.writeAllSync(Deno.stdout, this.encoder.encode(msg));
+    writeAllSync(Deno.stdout, this.encoder.encode(msg));
   }
 
   private clearLine(direction: Direction = Direction.all): void {

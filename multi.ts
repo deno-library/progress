@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite } from "./deps.ts";
+import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
 
 const isTTY = Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
@@ -40,8 +40,8 @@ export class MultiProgressBar {
   private encoder = new TextEncoder();
 
   /**
-   * Title, total, complete, incomplete, can also be set or changed in the render method 
-   * 
+   * Title, total, complete, incomplete, can also be set or changed in the render method
+   *
    * @param title Progress bar title, default: ''
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
@@ -75,7 +75,7 @@ export class MultiProgressBar {
 
   /**
    * "render" the progress bar
-   * 
+   *
    * - `bars` progress bars
    *   - `completed` completed value
    *   - `total` optional, total number of ticks to complete, default: 100
@@ -93,7 +93,7 @@ export class MultiProgressBar {
     let end = true;
     let index = this.#startIndex;
 
-    for (let { completed, total = 100, text = "", ...options } of bars) {
+    for (const { completed, total = 100, text = "", ...options } of bars) {
       if (completed < 0) {
         throw new Error(`completed must greater than or equal to 0`);
       }
@@ -157,7 +157,7 @@ export class MultiProgressBar {
 
   /**
    * interrupt the progress bar and write a message above it
-   * 
+   *
    * @param message The message to write
    */
   console(message: string | number): void {
@@ -187,7 +187,7 @@ export class MultiProgressBar {
   }
 
   private stdoutWrite(msg: string) {
-    Deno.writeAllSync(Deno.stdout, this.encoder.encode(msg));
+    writeAllSync(Deno.stdout, this.encoder.encode(msg));
   }
 
   private showCursor(): void {
