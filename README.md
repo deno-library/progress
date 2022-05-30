@@ -6,7 +6,7 @@ ProgressBar in terminal for deno
 
 ## Update
 
-### v1.2.5 - 2022.5.30
+### v1.2.6 - 2022.5.30
 
 [Add option to show ETA](https://github.com/deno-library/progress/issues/9).
 
@@ -32,7 +32,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.5/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.6/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -150,7 +150,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.5/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.6/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -174,7 +174,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.5/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.6/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
