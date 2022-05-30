@@ -8,7 +8,7 @@ const bars = new MultiProgressBar({
   // clear: true,
   complete: "=",
   incomplete: "-",
-  display: "[:bar] :text :percent :time :completed/:total",
+  display: "[:bar] :text :eta",
 });
 
 let completed1 = 0;
@@ -31,7 +31,7 @@ function downloading() {
 
     setTimeout(function () {
       downloading();
-    }, 100);
+    }, 200);
   }
 }
 

@@ -4,16 +4,20 @@ ProgressBar in terminal for deno
 
 ![logo](screenshots/logo.png)
 
-## Update  
+## Update
 
-### v1.2.0 - 2020.12.5  
+### v1.2.5 - 2022.5.30
 
-Add support for "Render multiple progress bars"  
-[Thanks "shixiaobao17145" for the great idea](https://github.com/deno-library/progress/issues/7).  
+[Add option to show ETA](https://github.com/deno-library/progress/issues/9).
 
-### v1.1.1 - 2020.07.15  
+### v1.2.0 - 2020.12.5
 
-changes: add mod.unstable.ts and ./exmaples/width.unstable.ts  
+Add support for "Render multiple progress bars"\
+[Thanks "shixiaobao17145" for the great idea](https://github.com/deno-library/progress/issues/7).
+
+### v1.1.1 - 2020.07.15
+
+changes: add mod.unstable.ts and ./exmaples/width.unstable.ts
 
 > Deno v1.2.0 started to support tty column, but is unstable
 
@@ -21,33 +25,33 @@ changes: add mod.unstable.ts and ./exmaples/width.unstable.ts
 deno run --unstable ./examples/width.unstable.ts
 ```
 
-## Usage  
+## Usage
 
 ### Multiple progress bars
 
-* example
+#### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.4/mod.ts"; 
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.5/mod.ts";
 
-const title = 'download files'; 
-const total = 100; 
+const title = "download files";
+const total = 100;
 
 const bars = new MultiProgressBar({
-  title, 
-  // clear: true, 
-  complete: '=', 
-  incomplete: '-', 
-  display: '[:bar] :text :percent :time :completed/:total'
-}); 
+  title,
+  // clear: true,
+  complete: "=",
+  incomplete: "-",
+  display: "[:bar] :text :percent :time :completed/:total",
+});
 
-let completed1 = 0; 
-let completed2 = 0; 
+let completed1 = 0;
+let completed2 = 0;
 
 function downloading() {
   if (completed1 <= total || completed2 <= total) {
-    completed1 += 1
-    completed2 += 2
+    completed1 += 1;
+    completed2 += 2;
     bars.render([
       {
         completed: completed1,
@@ -62,14 +66,14 @@ function downloading() {
 
     setTimeout(function () {
       downloading();
-    }, 100)
+    }, 100);
   }
 }
 
-downloading(); 
+downloading();
 ```
 
-* interface  
+#### interface
 
 ```ts
 interface constructorOptions {
@@ -90,8 +94,8 @@ interface renderOptions {
 }
 class MultiProgressBar {
   /**
-   * Title, total, complete, incomplete, can also be set or changed in the render method 
-   * 
+   * Title, total, complete, incomplete, can also be set or changed in the render method
+   *
    * @param title Progress bar title, default: ''
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
@@ -100,23 +104,23 @@ class MultiProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    */
-  constructor(optopns: ConstructorOptions): void;
+  constructor(optopns: ConstructorOptions);
 
   /**
    * "render" the progress bar
-   * 
+   *
    * - `bars` progress bars
    *   - `completed` completed value
    *   - `total` optional, total number of ticks to complete, default: 100
    *   - `text` optional, text displayed per ProgressBar, default: ''
    *   - `complete` - optional, completion character
    *   - `incomplete` - optional, incomplete character
-   **/
+   */
   render(bars: Array<renderOptions>): void;
 
   /**
    * console: interrupt the progress bar and write a message above it
-   * 
+   *
    * @param message The message to write
    */
   console(message: string): void;
@@ -127,46 +131,58 @@ class MultiProgressBar {
    */
   end(): void;
 }
-```  
+```
+
+#### display
+
+What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+
+- `:bar` the progress bar itself
+- `:text` text displayed per ProgressBar
+- `:percent` completion percentage
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:total` total number of ticks to complete
+- `:completed` completed value
 
 ### Single progress bar
 
-* simple example
+#### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.5/mod.ts";
 
-const title = 'downloading:';
+const title = "downloading:";
 const total = 100;
 const progress = new ProgressBar({
-  title, 
-  total
+  title,
+  total,
 });
 let completed = 0;
 function downloading() {
   if (completed <= total) {
     progress.render(completed++);
 
-    setTimeout(function (){
+    setTimeout(function () {
       downloading();
-    }, 100)
+    }, 100);
   }
 }
 downloading();
 ```
 
-* complex example
+#### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.5/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
   total,
-  complete: '=',
-  incomplete: '-',
-  display: ':completed/:total hello :time [:bar] :percent'
-  // or => 
+  complete: "=",
+  incomplete: "-",
+  display: ":completed/:total hello :time [:bar] :percent",
+  // or =>
   // display: ':bar'
   // display: ':bar :time'
   // display: '[:bar]'
@@ -180,7 +196,7 @@ function run() {
 
     setTimeout(function () {
       run();
-    }, 100)
+    }, 100);
   }
 }
 run();
@@ -188,7 +204,7 @@ run();
 
 More examples in the `examples` folder.
 
-## interface
+#### interface
 
 ```ts
 interface ConstructorOptions {
@@ -215,7 +231,7 @@ class ProgressBar {
   /**  
    * Title, total, complete, incomplete, can also be set or changed in the render method 
    * 
-   * @param title Progress bar title, default: ''
+   * @param title progress bar title, default: ''
    * @param total total number of ticks to complete
    * @param width the displayed width of the progress, default: 50
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
@@ -230,10 +246,10 @@ class ProgressBar {
   /**
    * render: render the progress bar
    * 
-   * @param completed Completed value
-   * @param options Optional parameters
-   * @param options.title Progress bar title
-   * @param options.total Progress bar total
+   * @param completed completed value
+   * @param options optional parameters
+   * @param options.title progress bar title
+   * @param options.total optional, total number of ticks to complete, default: 100
    * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
@@ -252,7 +268,19 @@ class ProgressBar {
    */
   end(): void; 
 }
-```  
+```
+
+#### display
+
+What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+
+- `:title` progress bar title
+- `:percent` completion percentage
+- `:bar` the progress bar itself
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:completed` completed value
+- `:total` total number of ticks to complete
 
 ## Screenshots
 

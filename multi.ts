@@ -35,7 +35,6 @@ export class MultiProgressBar {
   #strs: string[] = [];
   private lastStr = "";
   private start = Date.now();
-  private time?: string;
   private lastRender = 0;
   private encoder = new TextEncoder();
 
@@ -82,14 +81,14 @@ export class MultiProgressBar {
    *   - `text` optional, text displayed per ProgressBar, default: ''
    *   - `complete` - optional, completion character
    *   - `incomplete` - optional, incomplete character
-   **/
+   */
   render(bars: Array<renderOptions>): void {
     if (this.#end || !isTTY) return;
 
     const now = Date.now();
     const ms = now - this.lastRender;
     this.lastRender = now;
-    this.time = ((now - this.start) / 1000).toFixed(1) + "s";
+    const time = ((now - this.start) / 1000).toFixed(1) + "s";
     let end = true;
     let index = this.#startIndex;
 
@@ -101,10 +100,18 @@ export class MultiProgressBar {
       if (completed > total && this.#strs[index] != undefined) continue;
       end = false;
       const percent = ((completed / total) * 100).toFixed(2) + "%";
+      const eta = completed == 0
+        ? "-"
+        : ((completed >= 100)
+          ? 0
+          : (total / completed - 1) * (now - this.start) / 1000).toFixed(1) +
+          "s";
+
       // :bar :text :percent :time :completed/:total
       let str = this.display
         .replace(":text", text)
-        .replace(":time", this.time)
+        .replace(":time", time)
+        .replace(":eta", eta)
         .replace(":percent", percent)
         .replace(":completed", completed + "")
         .replace(":total", total + "");
@@ -126,6 +133,9 @@ export class MultiProgressBar {
       ).join("");
 
       str = str.replace(":bar", complete + incomplete);
+      if (this.#strs[index] && str.length < this.#strs[index].length) {
+        str += " ".repeat(this.#strs[index].length - str.length);
+      }
       this.#strs[index++] = str;
     }
     if (ms < this.interval && end == false) return;

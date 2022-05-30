@@ -44,7 +44,6 @@ export default class ProgressBar {
   private isCompleted = false;
   private lastStr = "";
   private start = Date.now();
-  private time?: string;
   private lastRender = 0;
   private encoder = new TextEncoder();
 
@@ -107,14 +106,20 @@ export default class ProgressBar {
     if (ms < this.interval && completed < total) return;
 
     this.lastRender = now;
-    this.time = ((now - this.start) / 1000).toFixed(1) + "s";
+    const time = ((now - this.start) / 1000).toFixed(1) + "s";
+    const eta = completed == 0
+      ? "-"
+      : ((completed >= 100)
+        ? 0
+        : (total / completed - 1) * (now - this.start) / 1000).toFixed(1) + "s";
 
     const percent = ((completed / total) * 100).toFixed(2) + "%";
 
     // :title :percent :bar :time :completed/:total
     let str = this.display
       .replace(":title", options.title ?? this.title)
-      .replace(":time", this.time)
+      .replace(":time", time)
+      .replace(":eta", eta)
       .replace(":percent", percent)
       .replace(":completed", completed + "")
       .replace(":total", total + "");
@@ -152,6 +157,10 @@ export default class ProgressBar {
     ).fill(options.incomplete ?? this.incomplete).join("");
 
     str = str.replace(":bar", complete + precise + incomplete);
+
+    if (str.length < this.lastStr.length) {
+      str += " ".repeat(this.lastStr.length - str.length);
+    }
 
     if (str !== this.lastStr) {
       this.write(str);
