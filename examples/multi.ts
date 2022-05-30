@@ -31,7 +31,7 @@ function downloading() {
 
     setTimeout(function () {
       downloading();
-    }, 200);
+    }, 100);
   }
 }
 
