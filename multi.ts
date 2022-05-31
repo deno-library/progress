@@ -102,7 +102,7 @@ export class MultiProgressBar {
       const percent = ((completed / total) * 100).toFixed(2) + "%";
       const eta = completed == 0
         ? "-"
-        : ((completed >= 100)
+        : ((completed >= total)
           ? 0
           : (total / completed - 1) * (now - this.start) / 1000).toFixed(1) +
           "s";
