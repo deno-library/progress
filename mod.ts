@@ -1,7 +1,7 @@
 import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
 export { MultiProgressBar } from "./multi.ts";
 
-const isTTY = Deno.isatty(Deno.stdout.rid);
+const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
 
 const enum Direction {
