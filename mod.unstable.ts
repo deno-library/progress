@@ -1,6 +1,6 @@
 import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
 
-const isTTY = Deno.isatty(Deno.stdout.rid);
+const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
 
 const enum Direction {
