@@ -1,8 +1,8 @@
 import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
 export { MultiProgressBar } from "./multi.ts";
 
-const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
-const isWindow = Deno.build.os === "windows";
+const IS_TTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
+const IS_WINDOWS = Deno.build.os === "windows";
 
 const enum Direction {
   left,
@@ -14,6 +14,8 @@ interface constructorOptions {
   title?: string;
   total?: number;
   width?: number;
+  barWidth?: number;
+  maxWidth?: number;
   complete?: string;
   preciseBar?: string[];
   incomplete?: string;
@@ -33,7 +35,9 @@ interface renderOptions {
 export default class ProgressBar {
   title: string;
   total?: number;
-  width: number;
+  width?: number;
+  barWidth: number;
+  maxWidth?: number;
   complete: string;
   preciseBar: string[];
   incomplete: string;
@@ -52,7 +56,9 @@ export default class ProgressBar {
    *
    * @param title Progress bar title, default: ''
    * @param total total number of ticks to complete,
-   * @param width the displayed width of the progress, default: 50
+   * @param width deprecated in favor of barWidth; the displayed width of the progress, default: 50
+   * @param barWidth new prop to replace width; the displayed width of the progress, default: 50
+   * @param maxWidth maximum with of bar + text
    * @param complete completion character, default: colors.bgGreen(' '), can use any string
    * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
    * @param clear  clear the bar on completion, default: false
@@ -64,6 +70,8 @@ export default class ProgressBar {
       title = "",
       total,
       width = 50,
+      barWidth = 50,
+      maxWidth,
       complete = bgGreen(" "),
       preciseBar = [],
       incomplete = bgWhite(" "),
@@ -74,13 +82,27 @@ export default class ProgressBar {
   ) {
     this.title = title;
     this.total = total;
-    this.width = width;
     this.complete = complete;
     this.preciseBar = preciseBar.concat(complete);
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
+
+    this.maxWidth = maxWidth;
+    if (barWidth === 50 && !!width && width !== 50) {
+      this.barWidth = width;
+    } else {
+      this.barWidth = barWidth;
+    }
+    this.barWidth = Math.min(this.ttyColumns, this.barWidth);
+    // this.console(`this.tty: ${this.ttyColumns}, this.barWidth: ${this.barWidth}`);
+
+    Deno.addSignalListener("SIGINT", () => {
+      // console.log("\r\ninterrupted!");
+      this.end();
+      Deno.exit();
+    });
   }
 
   /**
@@ -94,10 +116,10 @@ export default class ProgressBar {
    *   - `incomplete` - incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
   render(completed: number, options: renderOptions = {}): void {
-    if (this.isCompleted || !isTTY) return;
+    if (this.isCompleted || !IS_TTY) return;
 
     if (completed < 0) {
-      throw new Error(`completed must greater than or equal to 0`);
+      throw new Error("d must greater than or equal to 0");
     }
 
     const total = options.total ?? this.total ?? 100;
@@ -107,6 +129,7 @@ export default class ProgressBar {
 
     this.lastRender = now;
     const time = ((now - this.start) / 1000).toFixed(1) + "s";
+    const formattedTime = this.#timeFormatted(now - this.start);
     const eta = completed == 0
       ? "-"
       : ((completed >= total)
@@ -115,9 +138,10 @@ export default class ProgressBar {
 
     const percent = ((completed / total) * 100).toFixed(2) + "%";
 
-    // :title :percent :bar :time :completed/:total
+    // :title :percent :bar :formattedTime :time :eta :completed/:total
     let str = this.display
       .replace(":title", options.title ?? this.title)
+      .replace(":formattedTime", formattedTime)
       .replace(":time", time)
       .replace(":eta", eta)
       .replace(":percent", percent)
@@ -129,9 +153,9 @@ export default class ProgressBar {
       0,
       this.ttyColumns - str.replace(":bar", "").length,
     );
-    if (availableSpace && isWindow) availableSpace -= 1;
+    if (availableSpace && IS_WINDOWS) availableSpace -= 1;
 
-    const width = Math.min(this.width, availableSpace);
+    const width = Math.min(this.barWidth, availableSpace);
     const finished = completed >= total;
 
     const preciseBar = options.preciseBar ?? this.preciseBar;
@@ -156,11 +180,15 @@ export default class ProgressBar {
       Math.max(width - roundedCompleteLength - (precision ? 1 : 0), 0),
     ).fill(options.incomplete ?? this.incomplete).join("");
 
+    // this.console(`text.length: ${str.replace(':bar', '').length}, barWidth: ${width}`);
     str = str.replace(":bar", complete + precise + incomplete);
 
-    if (str.length < this.lastStr.length) {
-      str += " ".repeat(this.lastStr.length - str.length);
-    }
+    // add spaces to cover up characters render from previous render
+    str += " ".repeat(this.ttyColumns);
+    // barDiff counts control characters to render the color of the bar
+    const barDiff = (complete.length + precise.length + incomplete.length) - width;
+    // clips the bar + text at displayable width
+    str = str.substring(0, this.ttyColumns + barDiff);
 
     if (str !== this.lastStr) {
       this.write(str);
@@ -203,7 +231,20 @@ export default class ProgressBar {
   }
 
   private get ttyColumns(): number {
-    return 100;
+    let numColumns = 100;
+
+    // by wrapping the call with try-catch block, this removes the need for mod.unstable.ts
+    try {
+      numColumns = Deno.consoleSize(Deno.stdout.rid).columns;
+    } catch {
+      //
+    }
+
+    if (this.maxWidth) {
+      numColumns = Math.min(numColumns, this.maxWidth);
+    }
+
+    return numColumns;
   }
 
   private breakLine() {
@@ -230,5 +271,35 @@ export default class ProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
+  }
+
+  #timeFormatted(ms: number): string {
+    let formatted = '';
+
+    if (ms < 1_000) {
+      formatted = `${ms}ms`;
+    } else if (ms < 60 * 1_000) {
+      formatted = `${(ms / 1000).toFixed(1)}s`;
+    } else if (ms < 60 * 60 * 1_000) {
+      const minutes = Math.floor(ms / 60 / 1_000);
+      const remainderMs = ms - (minutes * 60 * 1_000);
+      formatted = `${minutes}:${(remainderMs / 1000).toFixed(1).padStart(4, '0')}s`;
+    } else if (ms < 24 * 60 * 60 * 1_000) {
+      const hours = Math.floor(ms / 60 / 60 / 1_000);
+      let remainderMs = ms - (hours * 60 * 60 * 1_000);
+      const minutes = Math.floor(remainderMs / 60 / 1_000);
+      remainderMs -= (minutes * 60 * 1_000);
+      formatted = `${hours}:${minutes.toString().padStart(2, '0')}:${(remainderMs / 1000).toFixed(1).padStart(4, '0')}s`;
+    } else {
+      const days = Math.floor(ms / 24 / 60 / 60 / 1_000);
+      let remainderMs = ms - (days * 24 * 60 * 60 * 1_000);
+      const hours = Math.floor(ms / 60 / 60 / 1_000);
+      remainderMs -= (hours * 60 * 60 * 1_000);
+      const minutes = Math.floor(remainderMs / 60 / 1_000);
+      remainderMs -= (minutes * 60 * 1_000);
+      formatted = `${days} days ${hours}:${minutes.toString().padStart(2, '0')}:${(remainderMs / 1000).toFixed(1).padStart(4, '0')}s`;
+    }
+
+    return formatted;
   }
 }
