@@ -48,6 +48,14 @@ export default class ProgressBar {
   private lastRender = 0;
   private encoder = new TextEncoder();
 
+  // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
+  // otherwise it will leak async ops in `deno test`
+  // Deno Version: 1.27.1
+  private signalListener = () => {
+    this.end();
+    Deno.exit();
+  };
+
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
    *
@@ -82,7 +90,7 @@ export default class ProgressBar {
     this.clear = clear;
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
-    Deno.addSignalListener("SIGINT", this.signalListener.bind(this));
+    Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
   /**
@@ -234,10 +242,5 @@ export default class ProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
-  }
-
-  private signalListener(): void {
-    this.end();
-    Deno.exit();
   }
 }
