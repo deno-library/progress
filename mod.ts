@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
+import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 export { MultiProgressBar } from "./multi.ts";
 
 const hasStdout = Deno.stdout;
@@ -43,6 +43,7 @@ export default class ProgressBar {
 
   private isCompleted = false;
   private lastStr = "";
+  private lastStrLen = 0;
   private start = Date.now();
   private lastRender = 0;
   private encoder = new TextEncoder();
@@ -159,13 +160,14 @@ export default class ProgressBar {
 
     str = str.replace(":bar", complete + precise + incomplete);
 
-    if (str.length < this.lastStr.length) {
-      str += " ".repeat(this.lastStr.length - str.length);
-    }
-
     if (str !== this.lastStr) {
+      const strLen = stripColor(str).length;
+      if (strLen < this.lastStrLen) {
+        str += " ".repeat(this.lastStrLen - strLen);
+      }
       this.write(str);
       this.lastStr = str;
+      this.lastStrLen = strLen;
     }
 
     if (finished) this.end();

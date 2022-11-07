@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, writeAllSync } from "./deps.ts";
+import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 
 const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
 const isWindow = Deno.build.os === "windows";
@@ -134,8 +134,12 @@ export class MultiProgressBar {
       ).join("");
 
       str = str.replace(":bar", complete + incomplete);
-      if (this.#strs[index] && str.length < this.#strs[index].length) {
-        str += " ".repeat(this.#strs[index].length - str.length);
+      if (this.#strs[index] && str != this.#strs[index]) {
+        const strLen = stripColor(str).length;
+        const lastStrLen = stripColor(this.#strs[index]).length;
+        if (strLen < lastStrLen) {
+          str += " ".repeat(lastStrLen - strLen);
+        }
       }
       this.#strs[index++] = str;
     }
