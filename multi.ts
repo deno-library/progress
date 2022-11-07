@@ -38,6 +38,11 @@ export class MultiProgressBar {
   private lastRender = 0;
   private encoder = new TextEncoder();
 
+  private signalListener = () => {
+    this.end();
+    Deno.exit();
+  };
+
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
    *
@@ -70,7 +75,7 @@ export class MultiProgressBar {
     this.clear = clear;
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
-    Deno.addSignalListener("SIGINT", this.signalListener.bind(this));
+    Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
   /**
@@ -208,10 +213,5 @@ export class MultiProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
-  }
-
-  private signalListener(): void {
-    this.end();
-    Deno.exit();
   }
 }
