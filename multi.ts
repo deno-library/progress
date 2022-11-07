@@ -70,6 +70,7 @@ export class MultiProgressBar {
     this.clear = clear;
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
+    Deno.addSignalListener("SIGINT", this.signalListener.bind(this));
   }
 
   /**
@@ -156,6 +157,7 @@ export class MultiProgressBar {
    * No need to call in most cases, unless you want to end before 100%
    */
   end(): void {
+    Deno.removeSignalListener("SIGINT", this.signalListener);
     this.#end = true;
     if (this.clear) {
       this.resetScreen();
@@ -202,5 +204,10 @@ export class MultiProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
+  }
+
+  private signalListener(): void {
+    this.end();
+    Deno.exit();
   }
 }

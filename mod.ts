@@ -81,6 +81,7 @@ export default class ProgressBar {
     this.clear = clear;
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
+    Deno.addSignalListener("SIGINT", this.signalListener.bind(this));
   }
 
   /**
@@ -175,6 +176,7 @@ export default class ProgressBar {
    * No need to call in most cases, unless you want to end before 100%
    */
   end(): void {
+    Deno.removeSignalListener("SIGINT", this.signalListener);
     this.isCompleted = true;
     if (this.clear) {
       this.stdoutWrite("\r");
@@ -230,5 +232,10 @@ export default class ProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
+  }
+
+  private signalListener(): void {
+    this.end();
+    Deno.exit();
   }
 }
