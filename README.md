@@ -8,7 +8,11 @@ ProgressBar in terminal for deno
 
 ### v1.3.0 - 2022.11.7
 
-changes: **Deno.consoleSize is now stable**
+changes:
+
+1. fixed [colored string length calculation bug](https://github.com/deno-library/progress/issues/8)
+
+2.  **Deno.consoleSize is now stable**
 
 > [Deno v1.27.0 : Stabilize Deno.consoleSize() API](https://github.com/denoland/deno/pull/15933)
 
@@ -33,7 +37,7 @@ So `mod.unstable.ts` and `exmaples/width.unstable.ts` was removed.
 - exmaples/width.unstable.ts
 ```
 
-### v1.3.0 - 2022.11.7
+### v1.2.9 - 2022.11.7
 
 [Make this lib useable in deno tests](https://github.com/deno-library/progress/issues/13).
 
