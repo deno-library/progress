@@ -6,7 +6,34 @@ ProgressBar in terminal for deno
 
 ## Update
 
-### v1.2.9 - 2022.5.30
+### v1.3.0 - 2022.11.7
+
+changes: **Deno.consoleSize is now stable**
+
+> [Deno v1.27.0 : Stabilize Deno.consoleSize() API](https://github.com/denoland/deno/pull/15933)
+
+The Deno.consoleSize API change
+
+```diff
+- Deno.consoleSize(Deno.stdout.rid).columns;
++ Deno.consoleSize().columns;
+```
+
+Now you can run a wider bar without unstable.
+
+```diff
+- deno run --unstable ./examples/width.unstable.ts
++ deno run ./examples/width.ts
+```
+
+So `mod.unstable.ts` and `exmaples/width.unstable.ts` was removed.
+
+```diff
+- mod.unstable.ts
+- exmaples/width.unstable.ts
+```
+
+### v1.3.0 - 2022.11.7
 
 [Make this lib useable in deno tests](https://github.com/deno-library/progress/issues/13).
 
@@ -36,7 +63,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.9/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.0/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -141,20 +168,20 @@ class MultiProgressBar {
 
 What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
 
-- `:bar` the progress bar itself
-- `:text` text displayed per ProgressBar
-- `:percent` completion percentage
-- `:time` time elapsed in seconds
-- `:eta` estimated completion time in seconds
-- `:total` total number of ticks to complete
-- `:completed` completed value
+* `:bar` the progress bar itself
+* `:text` text displayed per ProgressBar
+* `:percent` completion percentage
+* `:time` time elapsed in seconds
+* `:eta` estimated completion time in seconds
+* `:total` total number of ticks to complete
+* `:completed` completed value
 
 ### Single progress bar
 
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.9/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.0/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -178,7 +205,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.9/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.0/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -278,13 +305,13 @@ class ProgressBar {
 
 What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
 
-- `:title` progress bar title
-- `:percent` completion percentage
-- `:bar` the progress bar itself
-- `:time` time elapsed in seconds
-- `:eta` estimated completion time in seconds
-- `:completed` completed value
-- `:total` total number of ticks to complete
+* `:title` progress bar title
+* `:percent` completion percentage
+* `:bar` the progress bar itself
+* `:time` time elapsed in seconds
+* `:eta` estimated completion time in seconds
+* `:completed` completed value
+* `:total` total number of ticks to complete
 
 ## Screenshots
 

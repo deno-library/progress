@@ -203,7 +203,7 @@ export default class ProgressBar {
   }
 
   private get ttyColumns(): number {
-    return 100;
+    return Deno.consoleSize().columns;
   }
 
   private breakLine() {
