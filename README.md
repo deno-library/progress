@@ -6,6 +6,10 @@ ProgressBar in terminal for deno
 
 ## Update
 
+### v1.2.9 - 2022.5.30
+
+[Make this lib useable in deno tests](https://github.com/deno-library/progress/issues/13).
+
 ### v1.2.6 - 2022.5.30
 
 [Add option to show ETA](https://github.com/deno-library/progress/issues/9).
@@ -32,7 +36,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.8/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.9/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -150,7 +154,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.8/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.9/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -174,7 +178,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.2.8/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.2.9/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -208,29 +212,29 @@ More examples in the `examples` folder.
 
 ```ts
 interface ConstructorOptions {
-  title?: string, 
-  total?: number, 
-  width?: number, 
-  complete?: string, 
-  preciseBar?: string[], 
-  incomplete?: string, 
-  clear?: boolean, 
-  interval?: number, 
+  title?: string,
+  total?: number,
+  width?: number,
+  complete?: string,
+  preciseBar?: string[],
+  incomplete?: string,
+  clear?: boolean,
+  interval?: number,
   display?: string
 }
 
 interface renderOptions {
-  title?: string, 
-  total?: number, 
-  complete?: string, 
-  preciseBar?: string[], 
-  incomplete?: string, 
+  title?: string,
+  total?: number,
+  complete?: string,
+  preciseBar?: string[],
+  incomplete?: string,
 }
 
 class ProgressBar {
-  /**  
-   * Title, total, complete, incomplete, can also be set or changed in the render method 
-   * 
+  /**
+   * Title, total, complete, incomplete, can also be set or changed in the render method
+   *
    * @param title progress bar title, default: ''
    * @param total total number of ticks to complete
    * @param width the displayed width of the progress, default: 50
@@ -241,11 +245,11 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    */
-  constructor(optopns: ConstructorOptions): void; 
+  constructor(optopns: ConstructorOptions): void;
 
   /**
    * render: render the progress bar
-   * 
+   *
    * @param completed completed value
    * @param options optional parameters
    * @param options.title progress bar title
@@ -253,20 +257,20 @@ class ProgressBar {
    * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    */
-  render(completed: number, options? renderOptions): void; 
+  render(completed: number, options? renderOptions): void;
 
   /**
    * console: interrupt the progress bar and write a message above it
-   * 
+   *
    * @param message The message to write
    */
-  console(message: string): void; 
+  console(message: string): void;
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void; 
+  end(): void;
 }
 ```
 
