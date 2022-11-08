@@ -54,4 +54,7 @@ Deno.test(`Use MultiProgressBar in a deno test`, async () => {
   );
 
   await Promise.all([promise1, promise2, promise3]);
+
+  // Needed to not crush deno test (probably due to timer3 not running correctly for some reason)
+  bars.end();
 });
