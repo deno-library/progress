@@ -1,4 +1,5 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
+import { prettyTime, prettyTimeOptions } from "./time.ts";
 
 const hasStdout = Deno.stdout;
 const isWindows = Deno.build.os === "windows";
@@ -11,6 +12,7 @@ interface constructorOptions {
   clear?: boolean;
   interval?: number;
   display?: string;
+  prettyTime?: boolean;
 }
 
 interface renderOptions {
@@ -19,6 +21,7 @@ interface renderOptions {
   total?: number;
   complete?: string;
   incomplete?: string;
+  prettyTimeOptions?: prettyTimeOptions;
 }
 
 interface bar {
@@ -34,6 +37,7 @@ export class MultiProgressBar {
   clear: boolean;
   interval: number;
   display: string;
+  prettyTime: boolean;
 
   #end = false;
   #startIndex = 0;
@@ -55,13 +59,14 @@ export class MultiProgressBar {
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
    *
-   * @param title Progress bar title, default: ''
-   * @param width the displayed width of the progress, default: 50
-   * @param complete completion character, default: colors.bgGreen(' '), can use any string
-   * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
-   * @param clear  clear the bar on completion, default: false
-   * @param interval  minimum time between updates in milliseconds, default: 16
-   * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+   * - title Progress bar title, default: ''
+   * - width the displayed width of the progress, default: 50
+   * - complete completion character, default: colors.bgGreen(' '), can use any string
+   * - incomplete incomplete character, default: colors.bgWhite(' '), can use any string
+   * - clear  clear the bar on completion, default: false
+   * - interval  minimum time between updates in milliseconds, default: 16
+   * - display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+   * - prettyTime Whether to pretty print time and eta 
    */
   constructor(
     {
@@ -72,6 +77,7 @@ export class MultiProgressBar {
       clear = false,
       interval,
       display,
+      prettyTime = false,
     }: constructorOptions = {},
   ) {
     if (title != "") {
@@ -84,6 +90,7 @@ export class MultiProgressBar {
     this.clear = clear;
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
+    this.prettyTime = prettyTime;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
@@ -96,6 +103,7 @@ export class MultiProgressBar {
    *   - `text` optional, text displayed per ProgressBar, default: ''
    *   - `complete` - optional, completion character
    *   - `incomplete` - optional, incomplete character
+   *   - `prettyTimeOptions` - prettyTime options
    */
   render(bars: Array<renderOptions>): void {
     if (this.#end || !hasStdout) return;
@@ -103,7 +111,6 @@ export class MultiProgressBar {
     const now = Date.now();
     const ms = now - this.lastRenderTime;
     this.lastRenderTime = now;
-    const time = ((now - this.start) / 1000).toFixed(1) + "s";
     let end = true;
     let index = this.#startIndex;
 
@@ -118,11 +125,17 @@ export class MultiProgressBar {
       }
       end = false;
       const percent = ((completed / total) * 100).toFixed(2) + "%";
+      const time = this.prettyTime
+        ? prettyTime(now - this.start, options.prettyTimeOptions)
+        : ((now - this.start) / 1000).toFixed(1) + "s";
+      const msEta = completed >= total
+        ? 0
+        : (total / completed - 1) * (now - this.start);
       const eta = completed == 0
         ? "-"
-        : ((completed >= total)
-          ? 0
-          : (total / completed - 1) * (now - this.start) / 1000).toFixed(1) +
+        : this.prettyTime
+        ? prettyTime(msEta, options.prettyTimeOptions)
+        : (msEta / 1000).toFixed(1) +
           "s";
 
       // :bar :text :percent :time :completed/:total

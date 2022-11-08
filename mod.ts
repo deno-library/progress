@@ -1,4 +1,5 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
+import { prettyTime, prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
 const hasStdout = Deno.stdout;
@@ -20,6 +21,7 @@ interface constructorOptions {
   clear?: boolean;
   interval?: number;
   display?: string;
+  prettyTime?: boolean;
 }
 
 interface renderOptions {
@@ -28,6 +30,7 @@ interface renderOptions {
   complete?: string;
   preciseBar?: string[];
   incomplete?: string;
+  prettyTimeOptions?: prettyTimeOptions;
 }
 
 export default class ProgressBar {
@@ -40,6 +43,7 @@ export default class ProgressBar {
   clear: boolean;
   interval: number;
   display: string;
+  prettyTime: boolean;
 
   private isCompleted = false;
   private lastStr = "";
@@ -59,14 +63,15 @@ export default class ProgressBar {
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
    *
-   * @param title Progress bar title, default: ''
-   * @param total total number of ticks to complete,
-   * @param width the displayed width of the progress, default: 50
-   * @param complete completion character, default: colors.bgGreen(' '), can use any string
-   * @param incomplete incomplete character, default: colors.bgWhite(' '), can use any string
-   * @param clear  clear the bar on completion, default: false
-   * @param interval  minimum time between updates in milliseconds, default: 16
-   * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+   * - title Progress bar title, default: ''
+   * - total total number of ticks to complete,
+   * - width the displayed width of the progress, default: 50
+   * - complete completion character, default: colors.bgGreen(' '), can use any string
+   * - incomplete incomplete character, default: colors.bgWhite(' '), can use any string
+   * - clear  clear the bar on completion, default: false
+   * - interval  minimum time between updates in milliseconds, default: 16
+   * - display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+   * - prettyTime Whether to pretty print time and eta
    */
   constructor(
     {
@@ -79,6 +84,7 @@ export default class ProgressBar {
       clear = false,
       interval = 16,
       display,
+      prettyTime = false,
     }: constructorOptions = {},
   ) {
     this.title = title;
@@ -90,18 +96,20 @@ export default class ProgressBar {
     this.clear = clear;
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
+    this.prettyTime = prettyTime;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
   /**
    * "render" the progress bar
    *
-   * - `completed` - completed value
-   * - `options` - optional parameters
-   *   - `title` - progress bar title
-   *   - `total` - total number of ticks to complete
-   *   - `complete` - completion character, If you want to change at a certain moment. For example, it turns red at 20%
-   *   - `incomplete` - incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
+   * - `completed` completed value
+   * - `options` optional parameters
+   *   - `title` progress bar title
+   *   - `total` total number of ticks to complete
+   *   - `complete` completion character, If you want to change at a certain moment. For example, it turns red at 20%
+   *   - `incomplete` incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
+   *   - `prettyTimeOptions` prettyTime options
    */
   render(completed: number, options: renderOptions = {}): void {
     if (this.isCompleted || !hasStdout) return;
@@ -116,12 +124,18 @@ export default class ProgressBar {
     if (ms < this.interval && completed < total) return;
 
     this.lastRenderTime = now;
-    const time = ((now - this.start) / 1000).toFixed(1) + "s";
+    const time = this.prettyTime
+      ? prettyTime(now - this.start, options.prettyTimeOptions)
+      : ((now - this.start) / 1000).toFixed(1) + "s";
+    const msEta = completed >= total
+      ? 0
+      : (total / completed - 1) * (now - this.start);
     const eta = completed == 0
       ? "-"
-      : ((completed >= total)
-        ? 0
-        : (total / completed - 1) * (now - this.start) / 1000).toFixed(1) + "s";
+      : this.prettyTime
+      ? prettyTime(msEta, options.prettyTimeOptions)
+      : (msEta / 1000).toFixed(1) +
+        "s";
 
     const percent = ((completed / total) * 100).toFixed(2) + "%";
 

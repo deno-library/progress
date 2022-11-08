@@ -67,7 +67,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.3/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.4/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -119,14 +119,30 @@ interface constructorOptions {
   clear?: boolean;
   interval?: number;
   display?: string;
+  prettyTime?: boolean;
 }
+
 interface renderOptions {
   completed: number;
   text?: string;
   total?: number;
   complete?: string;
   incomplete?: string;
+  prettyTimeOptions?: prettyTimeOptions;
 }
+
+/**
+ * prettyTime options
+ * @param withSpaces Whether to use spaces to separate times, `1d2h3m5s` or `1d 2h 3m 5s`, default false
+ * @param toFixedVal value pass to toFixed for seconds, default 1
+ * @param longFormat Whether to use a long format, default false, `1d2h3m5s` or `1days 2hours 3minutes 5seconds`
+ */
+interface prettyTimeOptions {
+  withSpaces?: boolean;
+  toFixedVal?: number;
+  longFormat?: boolean;
+}
+
 class MultiProgressBar {
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
@@ -138,18 +154,20 @@ class MultiProgressBar {
    * @param clear  clear the bar on completion, default: false
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+   * @param prettyTime Whether to pretty print time and eta
    */
   constructor(optopns: ConstructorOptions);
 
   /**
    * "render" the progress bar
    *
-   * - `bars` progress bars
-   *   - `completed` completed value
-   *   - `total` optional, total number of ticks to complete, default: 100
-   *   - `text` optional, text displayed per ProgressBar, default: ''
-   *   - `complete` - optional, completion character
-   *   - `incomplete` - optional, incomplete character
+   * @param bars progress bars
+   * @param bars.completed` completed value
+   * @param bars.total optional, total number of ticks to complete, default: 100
+   * @param bars.text optional, text displayed per ProgressBar, default: ''
+   * @param bars.complete optional, completion character
+   * @param bars.incomplete optional, incomplete character
+   * @param bars.prettyTimeOptions optional, prettyTime options
    */
   render(bars: Array<renderOptions>): void;
 
@@ -185,7 +203,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.4/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -209,7 +227,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.4/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -252,6 +270,7 @@ interface ConstructorOptions {
   clear?: boolean,
   interval?: number,
   display?: string
+  prettyTime?: boolean;
 }
 
 interface renderOptions {
@@ -260,6 +279,19 @@ interface renderOptions {
   complete?: string,
   preciseBar?: string[],
   incomplete?: string,
+  prettyTimeOptions?: prettyTimeOptions;
+}
+
+/**
+ * prettyTime options
+ * @param withSpaces Whether to use spaces to separate times, `1d2h3m5s` or `1d 2h 3m 5s`, default false
+ * @param toFixedVal value pass to toFixed for seconds, default 1
+ * @param longFormat Whether to use a long format, default false, `1d2h3m5s` or `1days 2hours 3minutes 5seconds`
+ */
+interface prettyTimeOptions {
+  withSpaces?: boolean;
+  toFixedVal?: number;
+  longFormat?: boolean;
 }
 
 class ProgressBar {
@@ -275,6 +307,7 @@ class ProgressBar {
    * @param clear  clear the bar on completion, default: false
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+   * @param prettyTime Whether to pretty print time and eta
    */
   constructor(optopns: ConstructorOptions): void;
 
@@ -283,10 +316,11 @@ class ProgressBar {
    *
    * @param completed completed value
    * @param options optional parameters
-   * @param options.title progress bar title
+   * @param options.title optional,progress bar title
    * @param options.total optional, total number of ticks to complete, default: 100
-   * @param options.complete completion character, If you want to change at a certain moment. For example, it turns red at 20%
-   * @param options.incomplete incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
+   * @param options.complete optional, completion character, If you want to change at a certain moment. For example, it turns red at 20%
+   * @param options.incomplete optional, incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
+   * @param options.prettyTimeOptions optional, prettyTime options
    */
   render(completed: number, options? renderOptions): void;
 
