@@ -38,6 +38,9 @@ export class MultiProgressBar {
   private lastRender = 0;
   private encoder = new TextEncoder();
 
+  // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
+  // otherwise it will leak async ops in `deno test`
+  // Deno Version: 1.27.1
   private signalListener = () => {
     this.end();
     Deno.exit();
