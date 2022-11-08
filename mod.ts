@@ -45,7 +45,7 @@ export default class ProgressBar {
   private lastStr = "";
   private lastStrLen = 0;
   private start = Date.now();
-  private lastRender = 0;
+  private lastRenderTime = 0;
   private encoder = new TextEncoder();
 
   // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
@@ -112,10 +112,10 @@ export default class ProgressBar {
 
     const total = options.total ?? this.total ?? 100;
     const now = Date.now();
-    const ms = now - this.lastRender;
+    const ms = now - this.lastRenderTime;
     if (ms < this.interval && completed < total) return;
 
-    this.lastRender = now;
+    this.lastRenderTime = now;
     const time = ((now - this.start) / 1000).toFixed(1) + "s";
     const eta = completed == 0
       ? "-"

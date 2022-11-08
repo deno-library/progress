@@ -21,6 +21,12 @@ interface renderOptions {
   incomplete?: string;
 }
 
+interface bar {
+  str: string;
+  strLen?: number;
+  end?: boolean;
+}
+
 export class MultiProgressBar {
   width: number;
   complete: string;
@@ -32,10 +38,10 @@ export class MultiProgressBar {
   #end = false;
   #startIndex = 0;
   #lastRows = 0;
-  #strs: string[] = [];
+  #bars: bar[] = [];
   private lastStr = "";
   private start = Date.now();
-  private lastRender = 0;
+  private lastRenderTime = 0;
   private encoder = new TextEncoder();
 
   // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
@@ -69,7 +75,7 @@ export class MultiProgressBar {
     }: constructorOptions = {},
   ) {
     if (title != "") {
-      this.#strs.push(title);
+      this.#bars.push({ str: title });
       this.#startIndex = 1;
     }
     this.width = width;
@@ -95,8 +101,8 @@ export class MultiProgressBar {
     if (this.#end || !hasStdout) return;
 
     const now = Date.now();
-    const ms = now - this.lastRender;
-    this.lastRender = now;
+    const ms = now - this.lastRenderTime;
+    this.lastRenderTime = now;
     const time = ((now - this.start) / 1000).toFixed(1) + "s";
     let end = true;
     let index = this.#startIndex;
@@ -106,7 +112,10 @@ export class MultiProgressBar {
         throw new Error(`completed must greater than or equal to 0`);
       }
       if (!Number.isInteger(total)) throw new Error(`total must be 'number'`);
-      if (completed > total && this.#strs[index] != undefined) continue;
+      if (this.#bars[index] && this.#bars[index].end) {
+        index++;
+        continue;
+      }
       end = false;
       const percent = ((completed / total) * 100).toFixed(2) + "%";
       const eta = completed == 0
@@ -142,23 +151,28 @@ export class MultiProgressBar {
       ).join("");
 
       str = str.replace(":bar", complete + incomplete);
-      if (this.#strs[index] && str != this.#strs[index]) {
-        const strLen = stripColor(str).length;
-        const lastStrLen = stripColor(this.#strs[index]).length;
+      const strLen = stripColor(str).length;
+      if (this.#bars[index] && str != this.#bars[index].str) {
+        const lastStrLen = this.#bars[index].strLen!;
         if (strLen < lastStrLen) {
           str += " ".repeat(lastStrLen - strLen);
         }
       }
-      this.#strs[index++] = str;
+
+      this.#bars[index++] = {
+        str,
+        strLen,
+        end: completed >= total,
+      };
     }
     if (ms < this.interval && end == false) return;
-    const renderStr = this.#strs.join("\n");
+    const renderStr = this.#bars.map((v) => v.str).join("\n");
 
     if (renderStr !== this.lastStr) {
       this.resetScreen();
       this.write(renderStr);
       this.lastStr = renderStr;
-      this.#lastRows = this.#strs.length;
+      this.#lastRows = this.#bars.length;
     }
 
     if (end) this.end();
