@@ -1,6 +1,6 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 
-const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
+const hasStdout = Deno.stdout;
 const isWindow = Deno.build.os === "windows";
 
 interface constructorOptions {
@@ -92,7 +92,7 @@ export class MultiProgressBar {
    *   - `incomplete` - optional, incomplete character
    */
   render(bars: Array<renderOptions>): void {
-    if (this.#end || !isTTY) return;
+    if (this.#end || !hasStdout) return;
 
     const now = Date.now();
     const ms = now - this.lastRender;
