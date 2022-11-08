@@ -1,6 +1,6 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 
-const isTTY = Deno.stdout && Deno.isatty(Deno.stdout.rid);
+const hasStdout = Deno.stdout;
 const isWindow = Deno.build.os === "windows";
 
 interface constructorOptions {
@@ -38,6 +38,14 @@ export class MultiProgressBar {
   private lastRender = 0;
   private encoder = new TextEncoder();
 
+  // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
+  // otherwise it will leak async ops in `deno test`
+  // Deno Version: 1.27.1
+  private signalListener = () => {
+    this.end();
+    Deno.exit();
+  };
+
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
    *
@@ -70,7 +78,7 @@ export class MultiProgressBar {
     this.clear = clear;
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
-    Deno.addSignalListener("SIGINT", this.signalListener.bind(this));
+    Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
   /**
@@ -84,7 +92,7 @@ export class MultiProgressBar {
    *   - `incomplete` - optional, incomplete character
    */
   render(bars: Array<renderOptions>): void {
-    if (this.#end || !isTTY) return;
+    if (this.#end || !hasStdout) return;
 
     const now = Date.now();
     const ms = now - this.lastRender;
@@ -208,10 +216,5 @@ export class MultiProgressBar {
 
   private showCursor(): void {
     this.stdoutWrite("\x1b[?25h");
-  }
-
-  private signalListener(): void {
-    this.end();
-    Deno.exit();
   }
 }
