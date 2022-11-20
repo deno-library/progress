@@ -221,9 +221,9 @@ export class MultiProgressBar {
   private get ttyColumns(): number {
     let numColumns = 100;
 
-    // by wrapping the call with try-catch block, we add the support for unstable consoleSize to MultiProgressBar
+    // try to get consoleSize.columns
     try {
-      numColumns = Deno.consoleSize(Deno.stdout.rid).columns;
+      numColumns = Deno.consoleSize().columns;
     } catch {
       //
     }

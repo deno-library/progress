@@ -233,9 +233,9 @@ export default class ProgressBar {
   private get ttyColumns(): number {
     let numColumns = 100;
 
-    // by wrapping the call with try-catch block, this removes the need for mod.unstable.ts
+    // try to get consoleSize.columns
     try {
-      numColumns = Deno.consoleSize(Deno.stdout.rid).columns;
+      numColumns = Deno.consoleSize().columns;
     } catch {
       //
     }
