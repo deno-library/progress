@@ -157,10 +157,9 @@ class MultiProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
-   * @param units 
    * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
-  constructor(optopns: ConstructorOptions);
+  constructor(options: ConstructorOptions);
 
   /**
    * "render" the progress bar
@@ -316,7 +315,7 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
-   * @param bars.units Optional text to use for `:units` token, default: ''
+   * @param units Optional text to use for `:units` token, default: ''
    * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(optopns: ConstructorOptions): void;
