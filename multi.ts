@@ -237,7 +237,7 @@ export class MultiProgressBar {
   }
 
   private get ttyColumns(): number {
-    // fix (os error 6) for deno test in wondows
+    // fix (os error 6) for deno test in windows
     const rid = (this.writer as unknown as { rid: number}).rid;
     if (isWindows && (rid !== undefined) && !Deno.isatty(rid)) return 100;
     return Deno.consoleSize().columns;
