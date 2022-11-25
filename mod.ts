@@ -21,6 +21,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  units?: string;
   writer?: Deno.WriterSync;
 }
 
@@ -44,7 +45,8 @@ export default class ProgressBar {
   interval: number;
   display: string;
   prettyTime: boolean;
-  writer: Deno.Writer;
+  units: string;
+  writer: Deno.WriterSync;
 
   private isCompleted = false;
   private lastStr = "";
@@ -73,6 +75,7 @@ export default class ProgressBar {
    * - interval  minimum time between updates in milliseconds, default: 16
    * - display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * - prettyTime Whether to pretty print time and eta
+   * - `units` Optional text to use for `:units` token, default: ''
    * - writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(
@@ -87,6 +90,7 @@ export default class ProgressBar {
       interval = 16,
       display,
       prettyTime = false,
+      units = "",
       writer = Deno.stdout,
     }: constructorOptions = {},
   ) {
@@ -100,6 +104,7 @@ export default class ProgressBar {
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
     this.prettyTime = prettyTime;
+    this.units = units;
     this.writer = writer;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
@@ -150,7 +155,8 @@ export default class ProgressBar {
       .replace(":eta", eta)
       .replace(":percent", percent)
       .replace(":completed", completed + "")
-      .replace(":total", total + "");
+      .replace(":total", total + "")
+      .replace(":units", this.units ?? "");
 
     // compute the available space (non-zero) for the bar
     let availableSpace = Math.max(
@@ -234,7 +240,8 @@ export default class ProgressBar {
 
   private get ttyColumns(): number {
     // fix (os error 6) for deno test in windows
-    if (isWindows && this.writer.rid && !Deno.isatty(this.writer.rid)) return 100;
+    const rid = (this.writer as unknown as { rid: number}).rid;
+    if (isWindows && (rid !== undefined) && !Deno.isatty(rid)) return 100;
     return Deno.consoleSize().columns;
   }
 

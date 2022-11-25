@@ -130,6 +130,7 @@ interface renderOptions {
   complete?: string;
   incomplete?: string;
   prettyTimeOptions?: prettyTimeOptions;
+  units?: string;
 }
 
 /**
@@ -156,6 +157,7 @@ class MultiProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param units 
    * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(optopns: ConstructorOptions);
@@ -170,6 +172,7 @@ class MultiProgressBar {
    * @param bars.complete optional, completion character
    * @param bars.incomplete optional, incomplete character
    * @param bars.prettyTimeOptions optional, prettyTime options
+   * @param bars.units optional, text to use for `:units` token, default: ''
    */
   render(bars: Array<renderOptions>): void;
 
@@ -199,6 +202,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 * `:eta` estimated completion time in seconds
 * `:total` total number of ticks to complete
 * `:completed` completed value
+* `:units` the units of a tick
 
 ### Single progress bar
 
@@ -273,6 +277,7 @@ interface ConstructorOptions {
   interval?: number,
   display?: string
   prettyTime?: boolean;
+  units?: string;
   writer?: Deno.WriterSync;
 }
 
@@ -311,6 +316,7 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param bars.units Optional text to use for `:units` token, default: ''
    * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(optopns: ConstructorOptions): void;
@@ -354,6 +360,7 @@ What is displayed and display order, default: ':title :percent :bar :time :compl
 * `:eta` estimated completion time in seconds
 * `:completed` completed value
 * `:total` total number of ticks to complete
+* `:units` the units of a tick
 
 ## Screenshots
 

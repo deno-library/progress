@@ -22,6 +22,7 @@ interface renderOptions {
   complete?: string;
   incomplete?: string;
   prettyTimeOptions?: prettyTimeOptions;
+  units?: string;
 }
 
 interface bar {
@@ -108,6 +109,7 @@ export class MultiProgressBar {
    *   - `complete` - optional, completion character
    *   - `incomplete` - optional, incomplete character
    *   - `prettyTimeOptions` - prettyTime options
+   *   - `units` - optional, text to use for `:units` token, default: ''
    */
   render(bars: Array<renderOptions>): void {
     if (this.#end || !this.writer) return;
@@ -149,7 +151,8 @@ export class MultiProgressBar {
         .replace(":eta", eta)
         .replace(":percent", percent)
         .replace(":completed", completed + "")
-        .replace(":total", total + "");
+        .replace(":total", total + "")
+        .replace(":units", options.units ?? "");
 
       // compute the available space (non-zero) for the bar
       let availableSpace = Math.max(
@@ -235,7 +238,8 @@ export class MultiProgressBar {
 
   private get ttyColumns(): number {
     // fix (os error 6) for deno test in wondows
-    if (isWindows && this.writer.rid && !Deno.isatty(this.writer.rid)) return 100;
+    const rid = (this.writer as unknown as { rid: number}).rid;
+    if (isWindows && (rid !== undefined) && !Deno.isatty(rid)) return 100;
     return Deno.consoleSize().columns;
   }
 
