@@ -2,7 +2,6 @@ import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
-const hasStdout = Deno.stdout;
 const isWindows = Deno.build.os === "windows";
 
 const enum Direction {
@@ -22,6 +21,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  writer?: Deno.WriterSync;
 }
 
 interface renderOptions {
@@ -44,6 +44,7 @@ export default class ProgressBar {
   interval: number;
   display: string;
   prettyTime: boolean;
+  writer: Deno.Writer;
 
   private isCompleted = false;
   private lastStr = "";
@@ -72,6 +73,7 @@ export default class ProgressBar {
    * - interval  minimum time between updates in milliseconds, default: 16
    * - display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * - prettyTime Whether to pretty print time and eta
+   * - writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(
     {
@@ -85,6 +87,7 @@ export default class ProgressBar {
       interval = 16,
       display,
       prettyTime = false,
+      writer = Deno.stdout,
     }: constructorOptions = {},
   ) {
     this.title = title;
@@ -97,6 +100,7 @@ export default class ProgressBar {
     this.interval = interval;
     this.display = display ?? ":title :percent :bar :time :completed/:total";
     this.prettyTime = prettyTime;
+    this.writer = writer;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
@@ -112,7 +116,7 @@ export default class ProgressBar {
    *   - `prettyTimeOptions` prettyTime options
    */
   render(completed: number, options: renderOptions = {}): void {
-    if (this.isCompleted || !hasStdout) return;
+    if (this.isCompleted || !this.writer) return;
 
     if (completed < 0) {
       throw new Error(`completed must greater than or equal to 0`);
@@ -203,7 +207,7 @@ export default class ProgressBar {
     Deno.removeSignalListener("SIGINT", this.signalListener);
     this.isCompleted = true;
     if (this.clear) {
-      this.stdoutWrite("\r");
+      this.writerWrite("\r");
       this.clearLine();
     } else {
       this.breakLine();
@@ -225,38 +229,38 @@ export default class ProgressBar {
 
   private write(msg: string): void {
     msg = `\r${msg}\x1b[?25l`;
-    this.stdoutWrite(msg);
+    this.writerWrite(msg);
   }
 
   private get ttyColumns(): number {
-    // fix (os error 6) for deno test in wondows
-    if (isWindows && !Deno.isatty(Deno.stdout.rid)) return 100;
+    // fix (os error 6) for deno test in windows
+    if (isWindows && this.writer.rid && !Deno.isatty(this.writer.rid)) return 100;
     return Deno.consoleSize().columns;
   }
 
   private breakLine() {
-    this.stdoutWrite("\r\n");
+    this.writerWrite("\r\n");
   }
 
-  private stdoutWrite(msg: string) {
-    writeAllSync(Deno.stdout, this.encoder.encode(msg));
+  private writerWrite(msg: string) {
+    writeAllSync(this.writer, this.encoder.encode(msg));
   }
 
   private clearLine(direction: Direction = Direction.all): void {
     switch (direction) {
       case Direction.all:
-        this.stdoutWrite("\x1b[2K");
+        this.writerWrite("\x1b[2K");
         break;
       case Direction.left:
-        this.stdoutWrite("\x1b[1K");
+        this.writerWrite("\x1b[1K");
         break;
       case Direction.right:
-        this.stdoutWrite("\x1b[0K");
+        this.writerWrite("\x1b[0K");
         break;
     }
   }
 
   private showCursor(): void {
-    this.stdoutWrite("\x1b[?25h");
+    this.writerWrite("\x1b[?25h");
   }
 }

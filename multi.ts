@@ -1,7 +1,6 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 
-const hasStdout = Deno.stdout;
 const isWindows = Deno.build.os === "windows";
 
 interface constructorOptions {
@@ -13,6 +12,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  writer?: Deno.WriterSync;
 }
 
 interface renderOptions {
@@ -38,6 +38,7 @@ export class MultiProgressBar {
   interval: number;
   display: string;
   prettyTime: boolean;
+  writer: Deno.WriterSync;
 
   #end = false;
   #startIndex = 0;
@@ -66,7 +67,8 @@ export class MultiProgressBar {
    * - clear  clear the bar on completion, default: false
    * - interval  minimum time between updates in milliseconds, default: 16
    * - display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
-   * - prettyTime Whether to pretty print time and eta 
+   * - prettyTime Whether to pretty print time and eta
+   * - writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(
     {
@@ -78,6 +80,7 @@ export class MultiProgressBar {
       interval,
       display,
       prettyTime = false,
+      writer = Deno.stdout
     }: constructorOptions = {},
   ) {
     if (title != "") {
@@ -91,6 +94,7 @@ export class MultiProgressBar {
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
     this.prettyTime = prettyTime;
+    this.writer = writer;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
@@ -106,7 +110,7 @@ export class MultiProgressBar {
    *   - `prettyTimeOptions` - prettyTime options
    */
   render(bars: Array<renderOptions>): void {
-    if (this.#end || !hasStdout) return;
+    if (this.#end || !this.writer) return;
 
     const now = Date.now();
     const ms = now - this.lastRenderTime;
@@ -220,30 +224,30 @@ export class MultiProgressBar {
 
   private write(msg: string): void {
     msg = `${msg}\x1b[?25l`;
-    this.stdoutWrite(msg);
+    this.writerWriter(msg);
   }
 
   private resetScreen() {
     if (this.#lastRows > 0) {
-      this.stdoutWrite("\x1b[" + (this.#lastRows - 1) + "A\r\x1b[?0J");
+      this.writerWriter("\x1b[" + (this.#lastRows - 1) + "A\r\x1b[?0J");
     }
   }
 
   private get ttyColumns(): number {
     // fix (os error 6) for deno test in wondows
-    if (isWindows && !Deno.isatty(Deno.stdout.rid)) return 100;
+    if (isWindows && this.writer.rid && !Deno.isatty(this.writer.rid)) return 100;
     return Deno.consoleSize().columns;
   }
 
   private breakLine() {
-    this.stdoutWrite("\r\n");
+    this.writerWriter("\r\n");
   }
 
-  private stdoutWrite(msg: string) {
-    writeAllSync(Deno.stdout, this.encoder.encode(msg));
+  private writerWriter(msg: string) {
+    writeAllSync(this.writer, this.encoder.encode(msg));
   }
 
   private showCursor(): void {
-    this.stdoutWrite("\x1b[?25h");
+    this.writerWriter("\x1b[?25h");
   }
 }

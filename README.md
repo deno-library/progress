@@ -120,6 +120,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  writer?: Deno.WriterSync;
 }
 
 interface renderOptions {
@@ -155,6 +156,7 @@ class MultiProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(optopns: ConstructorOptions);
 
@@ -271,6 +273,7 @@ interface ConstructorOptions {
   interval?: number,
   display?: string
   prettyTime?: boolean;
+  writer?: Deno.WriterSync;
 }
 
 interface renderOptions {
@@ -308,6 +311,7 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param writer Optional `Deno.WriterSync` to use for output, default: `Deno.stdout`
    */
   constructor(optopns: ConstructorOptions): void;
 
