@@ -27,6 +27,7 @@ interface constructorOptions {
 interface renderOptions {
   title?: string;
   total?: number;
+  text?: string;
   complete?: string;
   preciseBar?: string[];
   incomplete?: string;
@@ -95,7 +96,7 @@ export default class ProgressBar {
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval;
-    this.display = display ?? ":title :percent :bar :time :completed/:total";
+    this.display = display ?? ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
@@ -107,6 +108,7 @@ export default class ProgressBar {
    * - `options` optional parameters
    *   - `title` progress bar title
    *   - `total` total number of ticks to complete
+   *   - `text` optional, custom text, default: ''
    *   - `complete` completion character, If you want to change at a certain moment. For example, it turns red at 20%
    *   - `incomplete` incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    *   - `prettyTimeOptions` prettyTime options
@@ -143,6 +145,7 @@ export default class ProgressBar {
     let str = this.display
       .replace(":title", options.title ?? this.title)
       .replace(":time", time)
+      .replace(":text", options.text ?? "")
       .replace(":eta", eta)
       .replace(":percent", percent)
       .replace(":completed", completed + "")

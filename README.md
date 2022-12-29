@@ -67,7 +67,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.4/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.5/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -156,7 +156,7 @@ class MultiProgressBar {
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
    */
-  constructor(optopns: ConstructorOptions);
+  constructor(options: ConstructorOptions);
 
   /**
    * "render" the progress bar
@@ -203,7 +203,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.5/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -227,7 +227,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.4/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.5/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -276,6 +276,7 @@ interface ConstructorOptions {
 interface renderOptions {
   title?: string,
   total?: number,
+  text?: string;
   complete?: string,
   preciseBar?: string[],
   incomplete?: string,
@@ -309,14 +310,15 @@ class ProgressBar {
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
    */
-  constructor(optopns: ConstructorOptions): void;
+  constructor(options: ConstructorOptions): void;
 
   /**
    * render: render the progress bar
    *
    * @param completed completed value
    * @param options optional parameters
-   * @param options.title optional,progress bar title
+   * @param options.title optional, progress bar title
+   * @param options.text optional, custom text, default: ''
    * @param options.total optional, total number of ticks to complete, default: 100
    * @param options.complete optional, completion character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.incomplete optional, incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
