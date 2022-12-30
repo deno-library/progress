@@ -67,7 +67,7 @@ deno run --unstable ./examples/width.unstable.ts
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.5/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.6/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -203,7 +203,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.5/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.6/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -227,7 +227,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.5/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.3.6/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({

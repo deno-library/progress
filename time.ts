@@ -1,8 +1,8 @@
 /**
  * prettyTime options
- * @param withSpaces Whether to use spaces to separate times, `1d2h3m5s` or `1d 2h 3m 5s`, default false
- * @param toFixedVal value pass to toFixed for seconds, default 1
- * @param longFormat Whether to use a long format, default false, `1d2h3m5s` or `1days 2hours 3minutes 5seconds`
+ * - withSpaces Whether to use spaces to separate times, `1d2h3m5s` or `1d 2h 3m 5s`, default false
+ * - toFixedVal value pass to toFixed for seconds, default 1
+ * - longFormat Whether to use a long format, default false, `1d2h3m5s` or `1days 2hours 3minutes 5seconds`
  */
 export interface prettyTimeOptions {
   withSpaces?: boolean;
@@ -13,7 +13,7 @@ export interface prettyTimeOptions {
 /**
  * Convert time duration to a human readable string: 5d1h20m30s
  *
- * @param seconds The number to format, unit milliseconds
+ * - milliseconds The number to format, unit milliseconds
  */
 export function prettyTime(milliseconds: number, options: prettyTimeOptions = {
   withSpaces: false,
