@@ -1,8 +1,7 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 
-const hasStdout = Deno.stdout;
-const isWindows = Deno.build.os === "windows";
+const hasStdout = Deno.stdout
 
 interface constructorOptions {
   title?: string;
@@ -152,7 +151,7 @@ export class MultiProgressBar {
         0,
         this.ttyColumns - str.replace(":bar", "").length,
       );
-      if (availableSpace && isWindows) availableSpace -= 1;
+      if (availableSpace) availableSpace -= 1
       const width = Math.min(this.width, availableSpace);
       // :bar
       const completeLength = Math.round(width * completed / total);
@@ -230,9 +229,9 @@ export class MultiProgressBar {
   }
 
   private get ttyColumns(): number {
-    // fix (os error 6) for deno test in wondows
-    if (isWindows && !Deno.isatty(Deno.stdout.rid)) return 100;
-    return Deno.consoleSize().columns;
+    // else consoleSize may throw
+    if (!Deno.isatty(Deno.stdout.rid)) return 100
+    return Deno.consoleSize().columns
   }
 
   private breakLine() {
