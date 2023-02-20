@@ -1,7 +1,7 @@
 import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 
-const hasStdout = Deno.stdout
+const hasStdout = Deno.stdout;
 
 interface constructorOptions {
   title?: string;
@@ -65,7 +65,7 @@ export class MultiProgressBar {
    * - clear  clear the bar on completion, default: false
    * - interval  minimum time between updates in milliseconds, default: 16
    * - display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
-   * - prettyTime Whether to pretty print time and eta 
+   * - prettyTime Whether to pretty print time and eta
    */
   constructor(
     {
@@ -147,11 +147,11 @@ export class MultiProgressBar {
         .replace(":total", total + "");
 
       // compute the available space (non-zero) for the bar
-      let availableSpace = Math.max(
+      const availableSpace = Math.max(
         0,
         this.ttyColumns - str.replace(":bar", "").length,
       );
-      if (availableSpace) availableSpace -= 1
+      
       const width = Math.min(this.width, availableSpace);
       // :bar
       const completeLength = Math.round(width * completed / total);
@@ -229,9 +229,8 @@ export class MultiProgressBar {
   }
 
   private get ttyColumns(): number {
-    // else consoleSize may throw
-    if (!Deno.isatty(Deno.stdout.rid)) return 100
-    return Deno.consoleSize().columns
+    if (!Deno.isatty(Deno.stdout.rid)) return 100;
+    return Deno.consoleSize().columns;
   }
 
   private breakLine() {

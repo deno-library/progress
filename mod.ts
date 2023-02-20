@@ -2,7 +2,7 @@ import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
-const hasStdout = Deno.stdout
+const hasStdout = Deno.stdout;
 
 const enum Direction {
   left,
@@ -95,7 +95,8 @@ export default class ProgressBar {
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval;
-    this.display = display ?? ":title :percent :bar :time :completed/:total :text";
+    this.display = display ??
+      ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
     Deno.addSignalListener("SIGINT", this.signalListener);
   }
@@ -151,11 +152,10 @@ export default class ProgressBar {
       .replace(":total", total + "");
 
     // compute the available space (non-zero) for the bar
-    let availableSpace = Math.max(
+    const availableSpace = Math.max(
       0,
       this.ttyColumns - str.replace(":bar", "").length,
     );
-    if (availableSpace) availableSpace -= 1
 
     const width = Math.min(this.width, availableSpace);
     const finished = completed >= total;
@@ -231,13 +231,12 @@ export default class ProgressBar {
   }
 
   private get ttyColumns(): number {
-    // else consoleSize may throw
-    if (!Deno.isatty(Deno.stdout.rid)) return 100
-    return Deno.consoleSize().columns
+    if (!Deno.isatty(Deno.stdout.rid)) return 100;
+    return Deno.consoleSize().columns;
   }
 
   private breakLine() {
-    this.stdoutWrite("\r\n");
+    this.stdoutWrite("\n");
   }
 
   private stdoutWrite(msg: string) {
