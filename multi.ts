@@ -234,7 +234,7 @@ export class MultiProgressBar {
   }
 
   private breakLine() {
-    this.stdoutWrite("\r\n");
+    this.stdoutWrite("\n");
   }
 
   private stdoutWrite(msg: string) {
