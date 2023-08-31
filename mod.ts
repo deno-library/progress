@@ -154,7 +154,7 @@ export default class ProgressBar {
     // compute the available space (non-zero) for the bar
     const availableSpace = Math.max(
       0,
-      this.ttyColumns - str.replace(":bar", "").length,
+      this.ttyColumns - stripColor(str.replace(":bar", "")).length,
     );
 
     const width = Math.min(this.width, availableSpace);
