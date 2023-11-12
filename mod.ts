@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, stripColor, writeAllSync } from "./deps.ts";
+import { bgGreen, bgWhite, stripAnsiCode, writeAllSync } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
@@ -154,7 +154,7 @@ export default class ProgressBar {
     // compute the available space (non-zero) for the bar
     const availableSpace = Math.max(
       0,
-      this.ttyColumns - stripColor(str.replace(":bar", "")).length,
+      this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length,
     );
 
     const width = Math.min(this.width, availableSpace);
@@ -185,7 +185,7 @@ export default class ProgressBar {
     str = str.replace(":bar", complete + precise + incomplete);
 
     if (str !== this.lastStr) {
-      const strLen = stripColor(str).length;
+      const strLen = stripAnsiCode(str).length;
       if (strLen < this.lastStrLen) {
         str += " ".repeat(this.lastStrLen - strLen);
       }

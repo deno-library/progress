@@ -2,7 +2,7 @@ import ProgressBar from "../mod.ts";
 import {
   bgMagenta,
   bgCyan,
-} from "https://deno.land/std@0.74.0/fmt/colors.ts";
+} from "../example_deps.ts";
 
 const total = 100;
 

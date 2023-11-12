@@ -1,5 +1,5 @@
 import ProgressBar from "../mod.ts";
-import { bgRgb24 } from "https://deno.land/std@0.74.0/fmt/colors.ts";
+import { bgRgb24 } from "../example_deps.ts";
 
 const total = 100;
 
