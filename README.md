@@ -6,6 +6,10 @@ ProgressBar in terminal for deno
 
 ## Update
 
+### v1.4.0 - 2023.11.12
+
+update to use [deno standard library v0.206.0](https://deno.land/std@0.206.0)
+
 ### v1.3.9 - 2023.08.31
 
 fixed [Incorrect bar size when color is used in the title](https://github.com/deno-library/progress/issues/24)
