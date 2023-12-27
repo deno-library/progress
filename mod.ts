@@ -45,7 +45,7 @@ export default class ProgressBar {
   display: string;
   prettyTime: boolean;
 
-  private isCompleted = false;
+  #end = false;
   private lastStr = "";
   private lastStrLen = 0;
   private start = Date.now();
@@ -115,7 +115,7 @@ export default class ProgressBar {
    *   - `prettyTimeOptions` prettyTime options
    */
   render(completed: number, options: renderOptions = {}): void {
-    if (this.isCompleted || !hasStdout) return;
+    if (this.#end || !hasStdout) return;
 
     if (completed < 0) {
       throw new Error(`completed must greater than or equal to 0`);
@@ -124,7 +124,8 @@ export default class ProgressBar {
     const total = options.total ?? this.total ?? 100;
     const now = Date.now();
     const ms = now - this.lastRenderTime;
-    if (ms < this.interval && completed < total) return;
+    const end = completed >= total;
+    if (ms < this.interval && !end) return;
 
     this.lastRenderTime = now;
     const time = this.prettyTime
@@ -159,7 +160,6 @@ export default class ProgressBar {
     );
 
     const width = Math.min(this.width, availableSpace);
-    const finished = completed >= total;
 
     const preciseBar = options.preciseBar ?? this.preciseBar;
     const precision = preciseBar.length > 1;
@@ -171,7 +171,7 @@ export default class ProgressBar {
     let precise = "";
     if (precision) {
       const preciseLength = completeLength - roundedCompleteLength;
-      precise = finished
+      precise = end
         ? ""
         : preciseBar[Math.floor(preciseBar.length * preciseLength)];
     }
@@ -195,7 +195,7 @@ export default class ProgressBar {
       this.lastStrLen = strLen;
     }
 
-    if (finished) this.end();
+    if (end) this.end();
   }
 
   /**
@@ -204,7 +204,7 @@ export default class ProgressBar {
    */
   end(): void {
     Deno.removeSignalListener("SIGINT", this.signalListener);
-    this.isCompleted = true;
+    this.#end = true;
     if (this.clear) {
       this.stdoutWrite("\r");
       this.clearLine();

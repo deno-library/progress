@@ -178,13 +178,13 @@ export class MultiProgressBar {
         end: completed >= total,
       };
     }
-    if (ms < this.interval && end == false) return;
-    const renderStr = this.#bars.map((v) => v.str).join("\n");
+    if (ms < this.interval && !end) return;
+    const str = this.#bars.map((v) => v.str).join("\n");
 
-    if (renderStr !== this.lastStr) {
+    if (str !== this.lastStr) {
       this.resetScreen();
-      this.write(renderStr);
-      this.lastStr = renderStr;
+      this.write(str);
+      this.lastStr = str;
       this.#lastRows = this.#bars.length;
     }
 
