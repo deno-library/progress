@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, stripAnsiCode, writeAllSync } from "./deps.ts";
+import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 
 const hasStdout = Deno.stdout;
@@ -46,6 +46,7 @@ export class MultiProgressBar {
   private start = Date.now();
   private lastRenderTime = 0;
   private encoder = new TextEncoder();
+  private writer = Deno.stdout.writable.getWriter();
 
   // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
   // otherwise it will leak async ops in `deno test`
@@ -238,7 +239,7 @@ export class MultiProgressBar {
   }
 
   private stdoutWrite(msg: string) {
-    writeAllSync(Deno.stdout, this.encoder.encode(msg));
+    this.writer.write(this.encoder.encode(msg))
   }
 
   private showCursor(): void {

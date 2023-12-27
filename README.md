@@ -11,7 +11,7 @@ ProgressBar in terminal for deno
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.3.9/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.1/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -147,7 +147,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.9/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.1/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -171,7 +171,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.3.9/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.1/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -350,6 +350,10 @@ Log some messages next to the bar
 More screenshots in the `screenshots` folder.
 
 ## Update
+
+### v1.4.1 - 2023.12.27
+
+Remove deprecated writeAllSync, Use WritableStream instead.
 
 ### v1.4.0 - 2023.11.12
 
