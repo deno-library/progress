@@ -53,13 +53,14 @@ export default class ProgressBar {
   private encoder = new TextEncoder();
   private writer = Deno.stdout.writable.getWriter();
 
+  // Deno Version 1.39.1 no longer reports errors
   // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
   // otherwise it will leak async ops in `deno test`
   // Deno Version: 1.27.1
-  private signalListener = () => {
-    this.end();
-    Deno.exit();
-  };
+  // private signalListener = () => {
+  //   this.end();
+  //   Deno.exit();
+  // };
 
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
@@ -99,7 +100,7 @@ export default class ProgressBar {
     this.display = display ??
       ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
-    Deno.addSignalListener("SIGINT", this.signalListener);
+    // Deno.addSignalListener("SIGINT", this.signalListener);
   }
 
   /**
@@ -203,7 +204,7 @@ export default class ProgressBar {
    * No need to call in most cases, unless you want to end before 100%
    */
   end(): void {
-    Deno.removeSignalListener("SIGINT", this.signalListener);
+    // Deno.removeSignalListener("SIGINT", this.signalListener);
     this.#end = true;
     if (this.clear) {
       this.stdoutWrite("\r");
