@@ -75,20 +75,18 @@ export default class ProgressBar {
    * - display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * - prettyTime Whether to pretty print time and eta
    */
-  constructor(
-    {
-      title = "",
-      total,
-      width = 50,
-      complete = bgGreen(" "),
-      preciseBar = [],
-      incomplete = bgWhite(" "),
-      clear = false,
-      interval = 16,
-      display,
-      prettyTime = false,
-    }: constructorOptions = {},
-  ) {
+  constructor({
+    title = "",
+    total,
+    width = 50,
+    complete = bgGreen(" "),
+    preciseBar = [],
+    incomplete = bgWhite(" "),
+    clear = false,
+    interval = 16,
+    display,
+    prettyTime = false,
+  }: constructorOptions = {}) {
     this.title = title;
     this.total = total;
     this.width = width;
@@ -97,8 +95,8 @@ export default class ProgressBar {
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval;
-    this.display = display ??
-      ":title :percent :bar :time :completed/:total :text";
+    this.display =
+      display ?? ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
     // Deno.addSignalListener("SIGINT", this.signalListener);
   }
@@ -132,15 +130,14 @@ export default class ProgressBar {
     const time = this.prettyTime
       ? prettyTime(now - this.start, options.prettyTimeOptions)
       : ((now - this.start) / 1000).toFixed(1) + "s";
-    const msEta = completed >= total
-      ? 0
-      : (total / completed - 1) * (now - this.start);
-    const eta = completed == 0
-      ? "-"
-      : this.prettyTime
-      ? prettyTime(msEta, options.prettyTimeOptions)
-      : (msEta / 1000).toFixed(1) +
-        "s";
+    const msEta =
+      completed >= total ? 0 : (total / completed - 1) * (now - this.start);
+    const eta =
+      completed == 0
+        ? "-"
+        : this.prettyTime
+        ? prettyTime(msEta, options.prettyTimeOptions)
+        : (msEta / 1000).toFixed(1) + "s";
 
     const percent = ((completed / total) * 100).toFixed(2) + "%";
 
@@ -157,7 +154,7 @@ export default class ProgressBar {
     // compute the available space (non-zero) for the bar
     const availableSpace = Math.max(
       0,
-      this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length,
+      this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length
     );
 
     const width = Math.min(this.width, availableSpace);
@@ -166,7 +163,7 @@ export default class ProgressBar {
     const precision = preciseBar.length > 1;
 
     // :bar
-    const completeLength = width * completed / total;
+    const completeLength = (width * completed) / total;
     const roundedCompleteLength = Math.floor(completeLength);
 
     let precise = "";
@@ -177,12 +174,14 @@ export default class ProgressBar {
         : preciseBar[Math.floor(preciseBar.length * preciseLength)];
     }
 
-    const complete = new Array(roundedCompleteLength).fill(
-      options.complete ?? this.complete,
-    ).join("");
+    const complete = new Array(roundedCompleteLength)
+      .fill(options.complete ?? this.complete)
+      .join("");
     const incomplete = new Array(
-      Math.max(width - roundedCompleteLength - (precision ? 1 : 0), 0),
-    ).fill(options.incomplete ?? this.incomplete).join("");
+      Math.max(width - roundedCompleteLength - (precision ? 1 : 0), 0)
+    )
+      .fill(options.incomplete ?? this.incomplete)
+      .join("");
 
     str = str.replace(":bar", complete + precise + incomplete);
 
@@ -205,6 +204,7 @@ export default class ProgressBar {
    */
   end(): void {
     // Deno.removeSignalListener("SIGINT", this.signalListener);
+    if (this.#end) return;
     this.#end = true;
     if (this.clear) {
       this.stdoutWrite("\r");
@@ -213,6 +213,7 @@ export default class ProgressBar {
       this.breakLine();
     }
     this.showCursor();
+    this.writer.releaseLock();
   }
 
   /**

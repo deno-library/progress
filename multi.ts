@@ -69,18 +69,16 @@ export class MultiProgressBar {
    * - display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * - prettyTime Whether to pretty print time and eta
    */
-  constructor(
-    {
-      title = "",
-      width = 50,
-      complete = bgGreen(" "),
-      incomplete = bgWhite(" "),
-      clear = false,
-      interval,
-      display,
-      prettyTime = false,
-    }: constructorOptions = {},
-  ) {
+  constructor({
+    title = "",
+    width = 50,
+    complete = bgGreen(" "),
+    incomplete = bgWhite(" "),
+    clear = false,
+    interval,
+    display,
+    prettyTime = false,
+  }: constructorOptions = {}) {
     if (title != "") {
       this.#bars.push({ str: title });
       this.#startIndex = 1;
@@ -129,15 +127,14 @@ export class MultiProgressBar {
       const time = this.prettyTime
         ? prettyTime(now - this.start, options.prettyTimeOptions)
         : ((now - this.start) / 1000).toFixed(1) + "s";
-      const msEta = completed >= total
-        ? 0
-        : (total / completed - 1) * (now - this.start);
-      const eta = completed == 0
-        ? "-"
-        : this.prettyTime
-        ? prettyTime(msEta, options.prettyTimeOptions)
-        : (msEta / 1000).toFixed(1) +
-          "s";
+      const msEta =
+        completed >= total ? 0 : (total / completed - 1) * (now - this.start);
+      const eta =
+        completed == 0
+          ? "-"
+          : this.prettyTime
+          ? prettyTime(msEta, options.prettyTimeOptions)
+          : (msEta / 1000).toFixed(1) + "s";
 
       // :bar :text :percent :time :completed/:total
       let str = this.display
@@ -151,18 +148,18 @@ export class MultiProgressBar {
       // compute the available space (non-zero) for the bar
       const availableSpace = Math.max(
         0,
-        this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length,
+        this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length
       );
 
       const width = Math.min(this.width, availableSpace);
       // :bar
-      const completeLength = Math.round(width * completed / total);
-      const complete = new Array(completeLength).fill(
-        options.complete ?? this.complete,
-      ).join("");
-      const incomplete = new Array(width - completeLength).fill(
-        options.incomplete ?? this.incomplete,
-      ).join("");
+      const completeLength = Math.round((width * completed) / total);
+      const complete = new Array(completeLength)
+        .fill(options.complete ?? this.complete)
+        .join("");
+      const incomplete = new Array(width - completeLength)
+        .fill(options.incomplete ?? this.incomplete)
+        .join("");
 
       str = str.replace(":bar", complete + incomplete);
       const strLen = stripAnsiCode(str).length;
@@ -198,6 +195,7 @@ export class MultiProgressBar {
    */
   end(): void {
     // Deno.removeSignalListener("SIGINT", this.signalListener);
+    if (this.#end) return;
     this.#end = true;
     if (this.clear) {
       this.resetScreen();
@@ -205,6 +203,7 @@ export class MultiProgressBar {
       this.breakLine();
     }
     this.showCursor();
+    this.writer.releaseLock();
   }
 
   /**
@@ -240,7 +239,7 @@ export class MultiProgressBar {
   }
 
   private stdoutWrite(msg: string) {
-    this.writer.write(this.encoder.encode(msg))
+    this.writer.write(this.encoder.encode(msg));
   }
 
   private showCursor(): void {

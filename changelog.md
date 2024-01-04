@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.3 - 2024.01.04
+
+fix: The stream is already locked
+
 ### v1.4.2 - 2024.01.04
 
 remove addSignalListener: Deno Version 1.39.1, `deno test` no longer reports errors
