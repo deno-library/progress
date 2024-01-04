@@ -1,17 +1,5 @@
 ## Changelog
 
-### v1.4.3 - 2024.01.04
-
-fix: The stream is already locked
-
-### v1.4.2 - 2024.01.04
-
-remove `addSignalListener`: Deno Version 1.39.1, `deno test` no longer reports errors
-
-### v1.4.1 - 2023.12.27
-
-Remove deprecated `writeAllSync`, Use `WritableStream` instead.
-
 ### v1.4.0 - 2023.11.12
 
 update to use [deno standard library v0.206.0](https://deno.land/std@0.206.0)
