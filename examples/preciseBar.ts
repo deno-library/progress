@@ -1,8 +1,5 @@
 import ProgressBar from "../mod.ts";
-import {
-  bgWhite,
-  green,
-} from "../example_deps.ts";
+import { bgWhite, delay, green } from "../deps_example.ts";
 
 const total = 100;
 
@@ -24,14 +21,12 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function downloading() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++);
 
-    setTimeout(function () {
-      downloading();
-    }, 100);
+    await delay(50);
   }
 }
 
-downloading();
+await download();

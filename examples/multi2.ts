@@ -4,7 +4,7 @@ import {
   timerSource,
 } from "https://deno.land/x/rx_webstreams@0.2.0/mod.ts";
 
-const bars = new MultiProgressBar({ title: "Downloading Files: " });
+const bars = new MultiProgressBar({ title: "download Files: " });
 
 const timer1 = timerSource({
   maxEventCount: 100,

@@ -1,4 +1,5 @@
 import ProgressBar from "../mod.ts";
+import { delay } from "../deps_example.ts";
 
 const progress = new ProgressBar({
   title: "backward",
@@ -7,24 +8,23 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function forward() {
-  progress.render(completed++);
-  if (completed > 60) {
-    backward();
-  } else {
-    setTimeout(forward, 20);
+async function forward() {
+  while (completed <= 60) {
+    progress.render(completed++);
+    await delay(20);
   }
+
+  await backward();
 }
 
-function backward() {
-  // ==> here
-  progress.render(--completed);
-  // <== here
-  if (completed == 0) {
-    progress.end();
-  } else {
-    setTimeout(backward, 50);
+async function backward() {
+  while (completed > 0) {
+    // ==> here
+    progress.render(--completed);
+    // <== here
+    await delay(20);
   }
+  progress.end();
 }
 
-forward();
+await forward();

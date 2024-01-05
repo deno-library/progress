@@ -1,4 +1,5 @@
 import { MultiProgressBar } from "../mod.ts";
+import { delay } from "../deps_example.ts";
 
 const title = "download files";
 const total = 100;
@@ -14,8 +15,8 @@ const bars = new MultiProgressBar({
 let completed1 = 0;
 let completed2 = 0;
 
-function downloading() {
-  if (completed1 <= total || completed2 <= total) {
+async function download() {
+  while (completed1 <= total || completed2 <= total) {
     completed1 += 1;
     completed2 += 2;
     bars.render([
@@ -29,10 +30,8 @@ function downloading() {
       { completed: completed2, total, text: "file2" },
     ]);
 
-    setTimeout(function () {
-      downloading();
-    }, 100);
+    await delay(50);
   }
 }
 
-downloading();
+await download();

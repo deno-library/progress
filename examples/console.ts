@@ -1,4 +1,5 @@
 import ProgressBar from "../mod.ts";
+import { delay } from "../deps_example.ts";
 
 const title = "interval:";
 const total = 100;
@@ -10,17 +11,15 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function downloading() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++);
     // here ==>
     if (completed % 20 === 0) progress.console(completed);
     // <== here
 
-    setTimeout(function () {
-      downloading();
-    }, 50);
+    await delay(20);
   }
 }
 
-downloading();
+await download();

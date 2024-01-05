@@ -1,3 +1,4 @@
+import { delay } from "../deps_example.ts";
 import ProgressBar from "../mod.ts";
 
 const total = 100;
@@ -21,16 +22,14 @@ function* log() {
 
 const info = log()
 
-function run() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++, {
       title: completed % 20 === 0 ? info.next().value + "" : ""
     });
 
-    setTimeout(function () {
-      run();
-    }, 50);
+    await delay(100)
   }
 }
 
-run();
+await download();

@@ -1,3 +1,4 @@
+import { delay } from "../deps_example.ts";
 import ProgressBar from "../mod.ts";
 
 const total = 100;
@@ -14,8 +15,8 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function run() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++, {
       prettyTimeOptions: {
         withSpaces: true,
@@ -24,10 +25,8 @@ function run() {
       },
     });
 
-    setTimeout(function () {
-      run();
-    }, 1000);
+    await delay(1000);
   }
 }
 
-run();
+await download();

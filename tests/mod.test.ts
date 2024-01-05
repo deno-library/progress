@@ -1,8 +1,8 @@
 import ProgressBar from "../mod.ts";
-import { simpleTimerStream } from "../dev_deps.ts";
+import { simpleTimerStream } from "../deps_test.ts";
 
 Deno.test(`Use ProgressBar in a deno test`, async () => {
-  const progress = new ProgressBar({ title: "downloading: ", total: 50 });
+  const progress = new ProgressBar({ title: "download: ", total: 50 });
 
   const timer = simpleTimerStream({
     maxEventCount: 100,

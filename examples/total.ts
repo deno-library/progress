@@ -1,4 +1,5 @@
 import ProgressBar from "../mod.ts";
+import { delay } from "../deps_example.ts";
 
 const title = "total test";
 const total = 100;
@@ -11,17 +12,15 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function downloading() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     // Can also be set in the constructor
     // ==> here
     progress.render(completed++, { total });
     // <== here
 
-    setTimeout(function () {
-      downloading();
-    }, 100);
+    await delay(50);
   }
 }
 
-downloading();
+await download();

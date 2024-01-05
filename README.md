@@ -12,6 +12,7 @@ ProgressBar in terminal for deno
 
 ```ts
 import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.1-writeAllSync/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const title = "download files";
 const total = 100;
@@ -27,8 +28,8 @@ const bars = new MultiProgressBar({
 let completed1 = 0;
 let completed2 = 0;
 
-function downloading() {
-  if (completed1 <= total || completed2 <= total) {
+async function download() {
+  while (completed1 <= total || completed2 <= total) {
     completed1 += 1;
     completed2 += 2;
     bars.render([
@@ -43,13 +44,11 @@ function downloading() {
       { completed: completed2, total, text: "file2" },
     ]);
 
-    setTimeout(function () {
-      downloading();
-    }, 100);
+    await delay(50);
   }
 }
 
-downloading();
+await download();
 ```
 
 #### interface
@@ -132,15 +131,16 @@ class MultiProgressBar {
 
 #### display
 
-What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+What is displayed and display order, default: ':bar :text :percent :time
+:completed/:total'
 
-* `:bar` the progress bar itself
-* `:text` text displayed per ProgressBar
-* `:percent` completion percentage
-* `:time` time elapsed in seconds
-* `:eta` estimated completion time in seconds
-* `:total` total number of ticks to complete
-* `:completed` completed value
+- `:bar` the progress bar itself
+- `:text` text displayed per ProgressBar
+- `:percent` completion percentage
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:total` total number of ticks to complete
+- `:completed` completed value
 
 ### Single progress bar
 
@@ -148,6 +148,7 @@ What is displayed and display order, default: ':bar :text :percent :time :comple
 
 ```ts
 import ProgressBar from "https://deno.land/x/progress@v1.4.1-writeAllSync/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -156,22 +157,21 @@ const progress = new ProgressBar({
   total,
 });
 let completed = 0;
-function downloading() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++);
 
-    setTimeout(function () {
-      downloading();
-    }, 100);
+    await delay(50);
   }
 }
-downloading();
+await download();
 ```
 
 #### complex example
 
 ```ts
 import ProgressBar from "https://deno.land/x/progress@v1.4.1-writeAllSync/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -187,16 +187,14 @@ const progress = new ProgressBar({
   // ...
 });
 let completed = 0;
-function run() {
-  if (completed <= total) {
+async function download() {
+  while (completed <= total) {
     progress.render(completed++);
 
-    setTimeout(function () {
-      run();
-    }, 100);
+    await delay(50);
   }
 }
-run();
+await download();
 ```
 
 More examples in the `examples` folder.
@@ -287,15 +285,16 @@ class ProgressBar {
 
 #### display
 
-What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+What is displayed and display order, default: ':title :percent :bar :time
+:completed/:total'
 
-* `:title` progress bar title
-* `:percent` completion percentage
-* `:bar` the progress bar itself
-* `:time` time elapsed in seconds
-* `:eta` estimated completion time in seconds
-* `:completed` completed value
-* `:total` total number of ticks to complete
+- `:title` progress bar title
+- `:percent` completion percentage
+- `:bar` the progress bar itself
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:completed` completed value
+- `:total` total number of ticks to complete
 
 ## Screenshots
 
