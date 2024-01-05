@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.1-writeAllSync - 2024.01.05
+
+remove addSignalListener: Deno Version 1.39.1, deno test no longer reports errors
+
 ### v1.4.0 - 2023.11.12
 
 update to use [deno standard library v0.206.0](https://deno.land/std@0.206.0)
