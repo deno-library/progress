@@ -11,7 +11,7 @@ ProgressBar in terminal for deno
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.3/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.4/mod.ts";
 
 const title = "download files";
 const total = 100;
@@ -113,41 +113,42 @@ class MultiProgressBar {
    * @param bars.incomplete optional, incomplete character
    * @param bars.prettyTimeOptions optional, prettyTime options
    */
-  render(bars: Array<renderOptions>): void;
+  render(bars: Array<renderOptions>): Promise<void>;
 
   /**
    * console: interrupt the progress bar and write a message above it
    *
    * @param message The message to write
    */
-  console(message: string): void;
+  console(message: string): Promise<void>;
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void;
+  end(): Promise<void>;
 }
 ```
 
 #### display
 
-What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
+What is displayed and display order, default: ':bar :text :percent :time
+:completed/:total'
 
-* `:bar` the progress bar itself
-* `:text` text displayed per ProgressBar
-* `:percent` completion percentage
-* `:time` time elapsed in seconds
-* `:eta` estimated completion time in seconds
-* `:total` total number of ticks to complete
-* `:completed` completed value
+- `:bar` the progress bar itself
+- `:text` text displayed per ProgressBar
+- `:percent` completion percentage
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:total` total number of ticks to complete
+- `:completed` completed value
 
 ### Single progress bar
 
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.4/mod.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -171,7 +172,7 @@ downloading();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.3/mod.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.4/mod.ts";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -268,34 +269,35 @@ class ProgressBar {
    * @param options.incomplete optional, incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    * @param options.prettyTimeOptions optional, prettyTime options
    */
-  render(completed: number, options? renderOptions): void;
+  render(completed: number, options? renderOptions): Promise<void>;
 
   /**
    * console: interrupt the progress bar and write a message above it
    *
    * @param message The message to write
    */
-  console(message: string): void;
+  console(message: string): Promise<void>;
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void;
+  end(): Promise<void>;
 }
 ```
 
 #### display
 
-What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
+What is displayed and display order, default: ':title :percent :bar :time
+:completed/:total'
 
-* `:title` progress bar title
-* `:percent` completion percentage
-* `:bar` the progress bar itself
-* `:time` time elapsed in seconds
-* `:eta` estimated completion time in seconds
-* `:completed` completed value
-* `:total` total number of ticks to complete
+- `:title` progress bar title
+- `:percent` completion percentage
+- `:bar` the progress bar itself
+- `:time` time elapsed in seconds
+- `:eta` estimated completion time in seconds
+- `:completed` completed value
+- `:total` total number of ticks to complete
 
 ## Screenshots
 

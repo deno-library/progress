@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.4 - 2024.01.05
+
+fix: The stream is already locked
+
 ### v1.4.3 - 2024.01.04
 
 fix: The stream is already locked

@@ -1,8 +1,5 @@
 import ProgressBar from "../mod.ts";
-import {
-  yellow,
-  green,
-} from "../example_deps.ts";
+import { delay, green, yellow } from "../deps_example.ts";
 
 const total = 100;
 
@@ -14,23 +11,21 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function run() {
-  if (completed <= total) {
+async function run() {
+  while (completed <= total) {
     if (completed >= 20) {
-      progress.render(completed++, {
+      await progress.render(completed++, {
         // ==> here
         complete: green("="),
         incomplete: yellow("-"),
         // <== here
       });
     } else {
-      progress.render(completed++);
+      await progress.render(completed++);
     }
 
-    setTimeout(function () {
-      run();
-    }, 50);
+    await delay(20);
   }
 }
 
-run();
+await run();

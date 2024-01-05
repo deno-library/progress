@@ -104,7 +104,7 @@ export class MultiProgressBar {
    *   - `incomplete` - optional, incomplete character
    *   - `prettyTimeOptions` - prettyTime options
    */
-  render(bars: Array<renderOptions>): void {
+  async render(bars: Array<renderOptions>): Promise<void> {
     if (this.#end || !hasStdout) return;
 
     const now = Date.now();
@@ -127,14 +127,14 @@ export class MultiProgressBar {
       const time = this.prettyTime
         ? prettyTime(now - this.start, options.prettyTimeOptions)
         : ((now - this.start) / 1000).toFixed(1) + "s";
-      const msEta =
-        completed >= total ? 0 : (total / completed - 1) * (now - this.start);
-      const eta =
-        completed == 0
-          ? "-"
-          : this.prettyTime
-          ? prettyTime(msEta, options.prettyTimeOptions)
-          : (msEta / 1000).toFixed(1) + "s";
+      const msEta = completed >= total
+        ? 0
+        : (total / completed - 1) * (now - this.start);
+      const eta = completed == 0
+        ? "-"
+        : this.prettyTime
+        ? prettyTime(msEta, options.prettyTimeOptions)
+        : (msEta / 1000).toFixed(1) + "s";
 
       // :bar :text :percent :time :completed/:total
       let str = this.display
@@ -148,7 +148,7 @@ export class MultiProgressBar {
       // compute the available space (non-zero) for the bar
       const availableSpace = Math.max(
         0,
-        this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length
+        this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length,
       );
 
       const width = Math.min(this.width, availableSpace);
@@ -180,29 +180,29 @@ export class MultiProgressBar {
     const str = this.#bars.map((v) => v.str).join("\n");
 
     if (str !== this.lastStr) {
-      this.resetScreen();
-      this.write(str);
+      await this.resetScreen();
+      await this.write(str);
       this.lastStr = str;
       this.#lastRows = this.#bars.length;
     }
 
-    if (end) this.end();
+    if (end) await this.end();
   }
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void {
+  async end(): Promise<void> {
     // Deno.removeSignalListener("SIGINT", this.signalListener);
     if (this.#end) return;
     this.#end = true;
     if (this.clear) {
-      this.resetScreen();
+      await this.resetScreen();
     } else {
-      this.breakLine();
+      await this.breakLine();
     }
-    this.showCursor();
+    await this.showCursor();
     this.writer.releaseLock();
   }
 
@@ -211,21 +211,20 @@ export class MultiProgressBar {
    *
    * @param message The message to write
    */
-  console(message: string | number): void {
-    this.resetScreen();
-    this.write(`${message}`);
-    this.breakLine();
-    this.write(this.lastStr);
+  async console(message: string | number): Promise<void> {
+    await this.resetScreen();
+    await this.write(`${message}`);
+    await this.breakLine();
+    await this.write(this.lastStr);
   }
 
-  private write(msg: string): void {
-    msg = `${msg}\x1b[?25l`;
-    this.stdoutWrite(msg);
+  private write(msg: string): Promise<void> {
+    return this.stdoutWrite(`${msg}\x1b[?25l`);
   }
 
-  private resetScreen() {
+  private async resetScreen(): Promise<void> {
     if (this.#lastRows > 0) {
-      this.stdoutWrite("\x1b[" + (this.#lastRows - 1) + "A\r\x1b[?0J");
+      await this.stdoutWrite("\x1b[" + (this.#lastRows - 1) + "A\r\x1b[?0J");
     }
   }
 
@@ -234,15 +233,15 @@ export class MultiProgressBar {
     return Deno.consoleSize().columns;
   }
 
-  private breakLine() {
-    this.stdoutWrite("\n");
+  private breakLine(): Promise<void> {
+    return this.stdoutWrite("\n");
   }
 
-  private stdoutWrite(msg: string) {
-    this.writer.write(this.encoder.encode(msg));
+  private stdoutWrite(msg: string): Promise<void> {
+    return this.writer.write(this.encoder.encode(msg));
   }
 
-  private showCursor(): void {
-    this.stdoutWrite("\x1b[?25h");
+  private showCursor(): Promise<void> {
+    return this.stdoutWrite("\x1b[?25h");
   }
 }

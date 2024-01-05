@@ -95,8 +95,8 @@ export default class ProgressBar {
     this.incomplete = incomplete;
     this.clear = clear;
     this.interval = interval;
-    this.display =
-      display ?? ":title :percent :bar :time :completed/:total :text";
+    this.display = display ??
+      ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
     // Deno.addSignalListener("SIGINT", this.signalListener);
   }
@@ -113,7 +113,7 @@ export default class ProgressBar {
    *   - `incomplete` incomplete character, If you want to change at a certain moment. For example, it turns red at 20%
    *   - `prettyTimeOptions` prettyTime options
    */
-  render(completed: number, options: renderOptions = {}): void {
+  async render(completed: number, options: renderOptions = {}): Promise<void> {
     if (this.#end || !hasStdout) return;
 
     if (completed < 0) {
@@ -130,14 +130,14 @@ export default class ProgressBar {
     const time = this.prettyTime
       ? prettyTime(now - this.start, options.prettyTimeOptions)
       : ((now - this.start) / 1000).toFixed(1) + "s";
-    const msEta =
-      completed >= total ? 0 : (total / completed - 1) * (now - this.start);
-    const eta =
-      completed == 0
-        ? "-"
-        : this.prettyTime
-        ? prettyTime(msEta, options.prettyTimeOptions)
-        : (msEta / 1000).toFixed(1) + "s";
+    const msEta = completed >= total
+      ? 0
+      : (total / completed - 1) * (now - this.start);
+    const eta = completed == 0
+      ? "-"
+      : this.prettyTime
+      ? prettyTime(msEta, options.prettyTimeOptions)
+      : (msEta / 1000).toFixed(1) + "s";
 
     const percent = ((completed / total) * 100).toFixed(2) + "%";
 
@@ -154,7 +154,7 @@ export default class ProgressBar {
     // compute the available space (non-zero) for the bar
     const availableSpace = Math.max(
       0,
-      this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length
+      this.ttyColumns - stripAnsiCode(str.replace(":bar", "")).length,
     );
 
     const width = Math.min(this.width, availableSpace);
@@ -178,7 +178,7 @@ export default class ProgressBar {
       .fill(options.complete ?? this.complete)
       .join("");
     const incomplete = new Array(
-      Math.max(width - roundedCompleteLength - (precision ? 1 : 0), 0)
+      Math.max(width - roundedCompleteLength - (precision ? 1 : 0), 0),
     )
       .fill(options.incomplete ?? this.incomplete)
       .join("");
@@ -190,29 +190,29 @@ export default class ProgressBar {
       if (strLen < this.lastStrLen) {
         str += " ".repeat(this.lastStrLen - strLen);
       }
-      this.write(str);
+      await this.write(str);
       this.lastStr = str;
       this.lastStrLen = strLen;
     }
 
-    if (end) this.end();
+    if (end) await this.end();
   }
 
   /**
    * end: end a progress bar.
    * No need to call in most cases, unless you want to end before 100%
    */
-  end(): void {
+  async end(): Promise<void> {
     // Deno.removeSignalListener("SIGINT", this.signalListener);
     if (this.#end) return;
     this.#end = true;
     if (this.clear) {
-      this.stdoutWrite("\r");
-      this.clearLine();
+      await this.stdoutWrite("\r");
+      await this.clearLine();
     } else {
-      this.breakLine();
+      await this.breakLine();
     }
-    this.showCursor();
+    await this.showCursor();
     this.writer.releaseLock();
   }
 
@@ -221,16 +221,15 @@ export default class ProgressBar {
    *
    * @param message The message to write
    */
-  console(message: string | number): void {
-    this.clearLine();
-    this.write(`${message}`);
-    this.breakLine();
-    this.write(this.lastStr);
+  async console(message: string | number): Promise<void> {
+    await this.clearLine();
+    await this.write(`${message}`);
+    await this.breakLine();
+    await this.write(this.lastStr);
   }
 
-  private write(msg: string): void {
-    msg = `\r${msg}\x1b[?25l`;
-    this.stdoutWrite(msg);
+  private write(msg: string): Promise<void> {
+    return this.stdoutWrite(`\r${msg}\x1b[?25l`);
   }
 
   private get ttyColumns(): number {
@@ -238,29 +237,29 @@ export default class ProgressBar {
     return Deno.consoleSize().columns;
   }
 
-  private breakLine() {
-    this.stdoutWrite("\n");
+  private breakLine(): Promise<void> {
+    return this.stdoutWrite("\n");
   }
 
-  private stdoutWrite(msg: string) {
-    this.writer.write(this.encoder.encode(msg));
+  private stdoutWrite(msg: string): Promise<void> {
+    return this.writer.write(this.encoder.encode(msg));
   }
 
-  private clearLine(direction: Direction = Direction.all): void {
+  private clearLine(direction: Direction = Direction.all): Promise<void> {
     switch (direction) {
       case Direction.all:
-        this.stdoutWrite("\x1b[2K");
-        break;
+        return this.stdoutWrite("\x1b[2K");
+      // break;
       case Direction.left:
-        this.stdoutWrite("\x1b[1K");
-        break;
+        return this.stdoutWrite("\x1b[1K");
+      // break;
       case Direction.right:
-        this.stdoutWrite("\x1b[0K");
-        break;
+        return this.stdoutWrite("\x1b[0K");
+        // break;
     }
   }
 
-  private showCursor(): void {
-    this.stdoutWrite("\x1b[?25h");
+  private showCursor(): Promise<void> {
+    return this.stdoutWrite("\x1b[?25h");
   }
 }

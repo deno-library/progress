@@ -15,11 +15,14 @@ export interface prettyTimeOptions {
  *
  * - milliseconds The number to format, unit milliseconds
  */
-export function prettyTime(milliseconds: number, options: prettyTimeOptions = {
-  withSpaces: false,
-  toFixedVal: 1,
-  longFormat: false,
-}): string {
+export function prettyTime(
+  milliseconds: number,
+  options: prettyTimeOptions = {
+    withSpaces: false,
+    toFixedVal: 1,
+    longFormat: false,
+  },
+): string {
   let second = milliseconds / 1000;
   if (second < 60) {
     return unitToString(second, 0, options);
@@ -32,14 +35,20 @@ export function prettyTime(milliseconds: number, options: prettyTimeOptions = {
   let hour = Math.floor(minute / 60);
   minute %= 60;
   if (hour < 24) {
-    return unitToString(hour, 2, options) + unitToString(minute, 1, options) +
-      unitToString(second, 0, options);
+    return (
+      unitToString(hour, 2, options) +
+      unitToString(minute, 1, options) +
+      unitToString(second, 0, options)
+    );
   }
   const day = Math.floor(hour / 24);
   hour %= 24;
-  return unitToString(day, 3, options) + unitToString(hour, 2, options) +
+  return (
+    unitToString(day, 3, options) +
+    unitToString(hour, 2, options) +
     unitToString(minute, 1, options) +
-    unitToString(second, 0, options);
+    unitToString(second, 0, options)
+  );
 }
 
 function unitToString(

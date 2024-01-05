@@ -1,4 +1,5 @@
 import ProgressBar from "../mod.ts";
+import { delay } from "../deps_example.ts";
 
 const total = 100;
 
@@ -13,14 +14,12 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-function run() {
-  if (completed <= total) {
-    progress.render(completed++);
+async function run() {
+  while (completed <= total) {
+    await progress.render(completed++);
 
-    setTimeout(function () {
-      run();
-    }, 100);
+    await delay(20);
   }
 }
 
-run();
+await run();

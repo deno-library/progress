@@ -1,5 +1,5 @@
 import { prettyTime } from "../time.ts";
-import { assertEquals } from "../dev_deps.ts";
+import { assertEquals } from "../deps_dev.ts";
 
 Deno.test(`test prettyTime: default`, () => {
   // assertEquals(prettyTime(10), "10.0s");
