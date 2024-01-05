@@ -16,7 +16,7 @@ const bars = new MultiProgressBar({
 let completed1 = 0;
 let completed2 = 0;
 
-async function downloading() {
+async function download() {
   if (completed1 <= total || completed2 <= total) {
     completed1 += 1;
     completed2 += 2;
@@ -49,4 +49,4 @@ async function downloading() {
   }
 }
 
-await downloading();
+await download();

@@ -12,7 +12,7 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-async function downloading() {
+async function download() {
   while (completed <= total) {
     // Can also be set in the constructor
     // ==> here
@@ -23,4 +23,4 @@ async function downloading() {
   }
 }
 
-await downloading();
+await download();

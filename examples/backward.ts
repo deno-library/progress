@@ -19,7 +19,7 @@ async function forward() {
 async function backward() {
   while (completed > 0) {
     // ==> here
-    progress.render(--completed);
+    await progress.render(--completed);
     // <== here
     await delay(20);
   }

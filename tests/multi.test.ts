@@ -1,5 +1,5 @@
 import { MultiProgressBar } from "../mod.ts";
-import { delay } from "../deps_dev.ts";
+import { delay } from "../deps_test.ts";
 
 Deno.test(`Use MultiProgressBar in a deno test`, async () => {
   const title = "download files";

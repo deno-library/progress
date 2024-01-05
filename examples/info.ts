@@ -22,7 +22,7 @@ function* log() {
 
 const info = log();
 
-async function run() {
+async function download() {
   while (completed <= total) {
     await progress.render(completed++, {
       title: completed % 20 === 0 ? info.next().value + "" : "",
@@ -32,4 +32,4 @@ async function run() {
   }
 }
 
-await run();
+await download();

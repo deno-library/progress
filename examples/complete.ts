@@ -13,7 +13,7 @@ const progress = new ProgressBar({
 
 let completed = 0;
 
-async function run() {
+async function download() {
   while (completed <= total) {
     progress.render(completed++);
 
@@ -21,4 +21,4 @@ async function run() {
   }
 }
 
-await run();
+await download();
