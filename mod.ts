@@ -233,7 +233,7 @@ export default class ProgressBar {
   }
 
   private get ttyColumns(): number {
-    if (!Deno.isatty(Deno.stdout.rid)) return 100;
+    if (!Deno.stdout.isTerminal()) return 100;
     return Deno.consoleSize().columns;
   }
 
