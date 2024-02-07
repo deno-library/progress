@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.5 - 2024.01.26
+
+fix: [#26](https://github.com/deno-library/progress/issues/26)
+
 ### v1.4.4 - 2024.01.05
 
 fix: The stream is already locked
