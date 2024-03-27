@@ -1,6 +1,6 @@
 {
   "name": "@deno-library/progress",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "exports": "./mod.ts",
   "lock": false,
   "imports": {
