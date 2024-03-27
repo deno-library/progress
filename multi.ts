@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
+import { bgGreen, bgWhite, stripAnsiCode } from "@std/fmt/colors";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 
 const hasStdout = Deno.stdout;
@@ -29,6 +29,9 @@ interface bar {
   end?: boolean;
 }
 
+/**
+ * MultiProgressBar multiple progress bars.
+ */
 export class MultiProgressBar {
   width: number;
   complete: string;

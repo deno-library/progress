@@ -1,5 +1,6 @@
 import ProgressBar from "../mod.ts";
-import { delay, green, yellow } from "../deps_example.ts";
+import { green, yellow } from "colors";
+import { delay } from "@std/async";
 
 const total = 100;
 

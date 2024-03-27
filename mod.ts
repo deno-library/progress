@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
+import { bgGreen, bgWhite, stripAnsiCode } from "@std/fmt/colors";
 import { prettyTime, prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
@@ -33,6 +33,9 @@ interface renderOptions {
   prettyTimeOptions?: prettyTimeOptions;
 }
 
+/**
+ * ProgressBar single progress bar.
+ */
 export default class ProgressBar {
   title: string;
   total?: number;

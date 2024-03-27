@@ -1,5 +1,5 @@
 import ProgressBar from "../mod.ts";
-import { delay } from "../deps_example.ts";
+import { delay } from "@std/async";
 
 const progress = new ProgressBar({
   title: "backward",

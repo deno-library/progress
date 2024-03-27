@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.6 - 2024.03.27
+
+[support JSR](https://github.com/deno-library/progress/issues/28)
+
 ### v1.4.5 - 2024.01.26
 
 fix: [#26](https://github.com/deno-library/progress/issues/26)

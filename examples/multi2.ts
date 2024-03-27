@@ -2,7 +2,7 @@ import { MultiProgressBar } from "../mod.ts";
 import {
   simpleCallbackTarget,
   timerSource,
-} from "https://deno.land/x/rx_webstreams@0.2.0/mod.ts";
+} from "rx_webstreams/mod.ts";
 
 const bars = new MultiProgressBar({ title: "Downloading Files: " });
 

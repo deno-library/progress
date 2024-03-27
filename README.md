@@ -11,8 +11,8 @@ ProgressBar in terminal for deno
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.5/mod.ts";
-export { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.6/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const title = "download files";
 const total = 100;
@@ -146,8 +146,8 @@ What is displayed and display order, default: ':bar :text :percent :time
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.5/mod.ts";
-export { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.6/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const title = "downloading:";
 const total = 100;
@@ -169,8 +169,8 @@ await download();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.5/mod.ts";
-export { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
+import ProgressBar from "https://deno.land/x/progress@v1.4.6/mod.ts";
+import { delay } from "https://deno.land/std@0.210.0/async/delay.ts";
 
 const total = 100;
 const progress = new ProgressBar({
