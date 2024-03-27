@@ -20,5 +20,8 @@
       ".vscode",
       "changelog.md"
     ]
+  },
+  "compilerOptions": {
+    "declaration": true
   }
 }
