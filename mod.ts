@@ -1,5 +1,5 @@
 import { bgGreen, bgWhite, stripAnsiCode } from "@std/fmt/colors";
-import { prettyTime, prettyTimeOptions } from "./time.ts";
+import { prettyTime, type prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
 const hasStdout = Deno.stdout;

@@ -4,10 +4,11 @@
   "exports": "./mod.ts",
   "lock": false,
   "imports": {
+    "@deno-library/progress": "jsr:@deno-library/progress@^1.4.8",
     "@std/assert": "jsr:@std/assert@^0.220.1",
     "@std/async": "jsr:@std/async@^0.220.1",
     "@std/fmt": "jsr:@std/fmt@^0.220.1",
-    "rx_webstreams/": "https://deno.land/x/rx_webstreams@0.2.0/",
+    "rx_webstreams": "https://deno.land/x/rx_webstreams@0.2.0/mod.ts",
     "simpleTimerStream": "https://deno.land/x/simple_timer_stream@1.0.2/mod.ts"
   },
   "publish": {
@@ -20,7 +21,5 @@
       "changelog.md"
     ]
   },
-  "compilerOptions": {
-    "declaration": true
-  }
+  "compilerOptions": {}
 }

@@ -2,7 +2,7 @@ import { MultiProgressBar } from "../mod.ts";
 import {
   simpleCallbackTarget,
   timerSource,
-} from "rx_webstreams/mod.ts";
+} from "rx_webstreams";
 
 const bars = new MultiProgressBar({ title: "Downloading Files: " });
 
