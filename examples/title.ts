@@ -1,5 +1,5 @@
 import ProgressBar from "../mod.ts";
-import { delay } from "@std/async";
+import { delay } from "../deps.example.ts";
 
 const title = "progress:";
 const total = 100;

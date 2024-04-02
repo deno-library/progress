@@ -1,5 +1,5 @@
 import { MultiProgressBar } from "../mod.ts";
-import { delay } from "@std/async";
+import { delay } from "../deps.example.ts";
 
 const title = "download files";
 const total = 100;

@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.4.9 - 2024.04.02
+
+[Both JSR and HTTPS are supported](https://github.com/deno-library/progress/issues/29)
+
 ### v1.4.6 - 2024.03.27
 
 [support JSR](https://github.com/deno-library/progress/issues/28)
@@ -38,7 +42,7 @@ changes:
 
 1. fixed [colored string length calculation bug](https://github.com/deno-library/progress/issues/8)
 
-2.  **Deno.consoleSize is now stable**
+2. **Deno.consoleSize is now stable**
 
 > [Deno v1.27.0 : Stabilize Deno.consoleSize() API](https://github.com/denoland/deno/pull/15933)
 

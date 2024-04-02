@@ -1,13 +1,11 @@
 {
   "name": "@deno-library/progress",
-  "version": "1.4.8",
-  "exports": "./mod.ts",
-  "lock": false,
-  "imports": {
-    "@std/assert": "jsr:@std/assert@^0.220.1",
-    "@std/async": "jsr:@std/async@^0.220.1",
-    "@std/fmt": "jsr:@std/fmt@^0.220.1"
+  "version": "1.4.9",
+  "exports": {
+    ".": "./mod.ts",
+    "./time": "./time.ts"
   },
+  "lock": false,
   "publish": {
     "exclude": [
       "examples",
@@ -18,5 +16,8 @@
       "changelog.md"
     ]
   },
-  "compilerOptions": {}
+  "compilerOptions": {},
+  "fmt": {
+    "exclude": ["README.md"]
+  }
 }

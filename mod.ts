@@ -1,4 +1,4 @@
-import { bgGreen, bgWhite, stripAnsiCode } from "@std/fmt/colors";
+import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
 import { prettyTime, type prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 

@@ -11,9 +11,14 @@ ProgressBar in terminal for deno
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.8/mod.ts";
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
+
 // or JSR
+// import { MultiProgressBar } from "jsr:@deno-library/progress@v1.4.9";
+// import { delay } from "jsr:@std/async@0.221.0";
+
+// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
 // import { MultiProgressBar } from "@deno-library/progress";
 // import { delay } from "@std/async";
 
@@ -149,10 +154,16 @@ What is displayed and display order, default: ':bar :text :percent :time
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.8/mod.ts";
-// or JSR
-// import ProgressBar from "@deno-library/progress";
+import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
+
+// or JSR
+// import ProgressBar from "jsr:@deno-library/progress@v1.4.9";
+// import { delay } from "jsr:@std/async@0.221.0";
+
+// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
+// import ProgressBar from "@deno-library/progress";
+// import { delay } from "@std/async";
 
 const title = "downloading:";
 const total = 100;
@@ -174,10 +185,16 @@ await download();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.8/mod.ts";
-// or JSR
-// import ProgressBar from "@deno-library/progress";
+import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
+
+// or JSR
+// import ProgressBar from "jsr:@deno-library/progress@v1.4.9";
+// import { delay } from "jsr:@std/async@0.221.0";
+
+// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
+// import ProgressBar from "@deno-library/progress";
+// import { delay } from "@std/async";
 
 const total = 100;
 const progress = new ProgressBar({
