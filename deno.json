@@ -6,9 +6,7 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@^0.220.1",
     "@std/async": "jsr:@std/async@^0.220.1",
-    "@std/fmt": "jsr:@std/fmt@^0.220.1",
-    "rx_webstreams/": "https://deno.land/x/rx_webstreams@0.2.0/",
-    "simpleTimerStream": "https://deno.land/x/simple_timer_stream@1.0.2/mod.ts"
+    "@std/fmt": "jsr:@std/fmt@^0.220.1"
   },
   "publish": {
     "exclude": [
@@ -20,7 +18,5 @@
       "changelog.md"
     ]
   },
-  "compilerOptions": {
-    "declaration": true
-  }
+  "compilerOptions": {}
 }
