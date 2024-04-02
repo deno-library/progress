@@ -15,10 +15,14 @@ import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
 
 // or JSR
-// import { MultiProgressBar } from "jsr:@deno-library/progress@v1.4.9";
+// import { MultiProgressBar } from "jsr:@deno-library/progress";
+// import { delay } from "jsr:@std/async";
+
+// or JSR (with version)
+// import { MultiProgressBar } from "jsr:@deno-library/progress@1.4.9";
 // import { delay } from "jsr:@std/async@0.221.0";
 
-// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
+// or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import { MultiProgressBar } from "@deno-library/progress";
 // import { delay } from "@std/async";
 
@@ -158,10 +162,14 @@ import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
 
 // or JSR
-// import ProgressBar from "jsr:@deno-library/progress@v1.4.9";
+// import ProgressBar from "jsr:@deno-library/progress";
+// import { delay } from "jsr:@std/async";
+
+// or JSR (with version)
+// import ProgressBar from "jsr:@deno-library/progress@1.4.9";
 // import { delay } from "jsr:@std/async@0.221.0";
 
-// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
+// or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import ProgressBar from "@deno-library/progress";
 // import { delay } from "@std/async";
 
@@ -189,10 +197,14 @@ import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
 import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
 
 // or JSR
-// import ProgressBar from "jsr:@deno-library/progress@v1.4.9";
+// import ProgressBar from "jsr:@deno-library/progress";
+// import { delay } from "jsr:@std/async";
+
+// or JSR (with version)
+// import ProgressBar from "jsr:@deno-library/progress@1.4.9";
 // import { delay } from "jsr:@std/async@0.221.0";
 
-// or JSR (Run `deno add @deno-library/progress` and `deno add @std/async`)
+// or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import ProgressBar from "@deno-library/progress";
 // import { delay } from "@std/async";
 
