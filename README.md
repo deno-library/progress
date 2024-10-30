@@ -19,7 +19,7 @@ import { MultiProgressBar } from "jsr:@deno-library/progress";
 import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import { MultiProgressBar } from "jsr:@deno-library/progress@1.5.0";
+// import { MultiProgressBar } from "jsr:@deno-library/progress@1.5.1";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
@@ -27,7 +27,7 @@ import { delay } from "jsr:@std/async";
 // import { delay } from "@std/async";
 
 // or
-// import { MultiProgressBar } from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import { MultiProgressBar } from "https://deno.land/x/progress@v1.5.1/mod.ts";
 // import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
 
 const title = "download files";
@@ -168,7 +168,7 @@ import ProgressBar from "jsr:@deno-library/progress";
 import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import ProgressBar from "jsr:@deno-library/progress@1.5.0";
+// import ProgressBar from "jsr:@deno-library/progress@1.5.1";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
@@ -176,7 +176,7 @@ import { delay } from "jsr:@std/async";
 // import { delay } from "@std/async";
 
 // or
-// import ProgressBar from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import ProgressBar from "https://deno.land/x/progress@v1.5.1/mod.ts";
 // import { delay } from "@std/async/delay";
 
 const title = "downloading:";
@@ -203,7 +203,7 @@ import ProgressBar from "jsr:@deno-library/progress";
 import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import ProgressBar from "jsr:@deno-library/progress@1.5.0";
+// import ProgressBar from "jsr:@deno-library/progress@1.5.1";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
@@ -211,7 +211,7 @@ import { delay } from "jsr:@std/async";
 // import { delay } from "@std/async";
 
 // or
-// import ProgressBar from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import ProgressBar from "https://deno.land/x/progress@v1.5.1/mod.ts";
 // import { delay } from "@std/async/delay";
 
 const total = 100;

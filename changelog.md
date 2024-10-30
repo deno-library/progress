@@ -1,6 +1,13 @@
 ## Changelog
 
-### v1.5.0 - 2024.04.02
+### v1.5.1 - 2024.10.30
+
+Changed `Deno.stdout.writable.getWriter()` to `writeAll` in `@std/io/write-all`.
+
+Initially, I was using `writeAllSync`, but on December 27, 2023, I discovered that `writeAllSync` was deprecated, and the documentation recommended using the `stream API`. As a result, I released version 1.4.1 (Remove deprecated writeAllSync, Use WritableStream instead). However, both `writeAll` and `writeAllSync` are now available again, and I plan to switch back. Currently using the promise style, so I changed to use `writeAll`.
+
+### v1.5.0 - 2024.10.30
+
 [Allow to configure the writer to something other than stdout](https://github.com/deno-library/progress/issues/30)
 
 ### v1.4.9 - 2024.04.02
