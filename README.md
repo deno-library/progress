@@ -4,6 +4,10 @@ ProgressBar in terminal for deno
 
 ![logo](screenshots/logo.png)
 
+## Changelog
+
+[changelog](./changelog.md)
+
 ## Usage
 
 ### Multiple progress bars
@@ -11,20 +15,20 @@ ProgressBar in terminal for deno
 #### example
 
 ```ts
-import { MultiProgressBar } from "https://deno.land/x/progress@v1.4.9/mod.ts";
-import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
-
-// or JSR
-// import { MultiProgressBar } from "jsr:@deno-library/progress";
-// import { delay } from "jsr:@std/async";
+import { MultiProgressBar } from "jsr:@deno-library/progress";
+import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import { MultiProgressBar } from "jsr:@deno-library/progress@1.4.9";
+// import { MultiProgressBar } from "jsr:@deno-library/progress@1.5.0";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import { MultiProgressBar } from "@deno-library/progress";
 // import { delay } from "@std/async";
+
+// or
+// import { MultiProgressBar } from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
 
 const title = "download files";
 const total = 100;
@@ -74,6 +78,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  output?: typeof Deno.stdout | typeof Deno.stderr;
 }
 
 interface renderOptions {
@@ -109,6 +114,7 @@ class MultiProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':bar :text :percent :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param output Output stream, can be Deno.stdout or Deno.stderr, default is Deno.stdout
    */
   constructor(options: ConstructorOptions);
 
@@ -158,20 +164,20 @@ What is displayed and display order, default: ':bar :text :percent :time
 #### simple example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
-import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
-
-// or JSR
-// import ProgressBar from "jsr:@deno-library/progress";
-// import { delay } from "jsr:@std/async";
+import ProgressBar from "jsr:@deno-library/progress";
+import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import ProgressBar from "jsr:@deno-library/progress@1.4.9";
+// import ProgressBar from "jsr:@deno-library/progress@1.5.0";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import ProgressBar from "@deno-library/progress";
 // import { delay } from "@std/async";
+
+// or
+// import ProgressBar from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import { delay } from "@std/async/delay";
 
 const title = "downloading:";
 const total = 100;
@@ -193,20 +199,20 @@ await download();
 #### complex example
 
 ```ts
-import ProgressBar from "https://deno.land/x/progress@v1.4.9/mod.ts";
-import { delay } from "https://deno.land/std@0.220.1/async/delay.ts";
-
-// or JSR
-// import ProgressBar from "jsr:@deno-library/progress";
-// import { delay } from "jsr:@std/async";
+import ProgressBar from "jsr:@deno-library/progress";
+import { delay } from "jsr:@std/async";
 
 // or JSR (with version)
-// import ProgressBar from "jsr:@deno-library/progress@1.4.9";
+// import ProgressBar from "jsr:@deno-library/progress@1.5.0";
 // import { delay } from "jsr:@std/async@0.221.0";
 
 // or JSR (no prefix, run `deno add @deno-library/progress` and `deno add @std/async`)
 // import ProgressBar from "@deno-library/progress";
 // import { delay } from "@std/async";
+
+// or
+// import ProgressBar from "https://deno.land/x/progress@v1.5.0/mod.ts";
+// import { delay } from "@std/async/delay";
 
 const total = 100;
 const progress = new ProgressBar({
@@ -248,6 +254,7 @@ interface ConstructorOptions {
   interval?: number,
   display?: string
   prettyTime?: boolean;
+  output?: typeof Deno.stdout | typeof Deno.stderr;
 }
 
 interface renderOptions {
@@ -286,6 +293,7 @@ class ProgressBar {
    * @param interval  minimum time between updates in milliseconds, default: 16
    * @param display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * @param prettyTime Whether to pretty print time and eta
+   * @param output Output stream, can be Deno.stdout or Deno.stderr, default is Deno.stdout
    */
   constructor(options: ConstructorOptions): void;
 
@@ -382,7 +390,3 @@ Log some messages next to the bar
 ![console](./screenshots/info.gif)
 
 More screenshots in the `screenshots` folder.
-
-## Changelog
-
-[changelog](./changelog.md)

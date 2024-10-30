@@ -2,7 +2,7 @@ import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
 import { prettyTime, type prettyTimeOptions } from "./time.ts";
 export { MultiProgressBar } from "./multi.ts";
 
-const hasStdout = Deno.stdout;
+const isTerminal = Deno.stdout.isTerminal;
 
 const enum Direction {
   left,
@@ -21,6 +21,7 @@ interface constructorOptions {
   interval?: number;
   display?: string;
   prettyTime?: boolean;
+  output?: typeof Deno.stdout | typeof Deno.stderr;
 }
 
 interface renderOptions {
@@ -54,16 +55,7 @@ export default class ProgressBar {
   private start = Date.now();
   private lastRenderTime = 0;
   private encoder = new TextEncoder();
-  private writer = Deno.stdout.writable.getWriter();
-
-  // Deno Version 1.39.1 no longer reports errors
-  // Note from @bjesuiter: This MUST be a Lamda function compared to a class member function,
-  // otherwise it will leak async ops in `deno test`
-  // Deno Version: 1.27.1
-  // private signalListener = () => {
-  //   this.end();
-  //   Deno.exit();
-  // };
+  private writer: WritableStreamDefaultWriter<Uint8Array>;
 
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
@@ -77,6 +69,7 @@ export default class ProgressBar {
    * - interval  minimum time between updates in milliseconds, default: 16
    * - display  What is displayed and display order, default: ':title :percent :bar :time :completed/:total'
    * - prettyTime Whether to pretty print time and eta
+   * - output Output stream, can be Deno.stdout or Deno.stderr, default is Deno.stdout
    */
   constructor({
     title = "",
@@ -89,6 +82,7 @@ export default class ProgressBar {
     interval = 16,
     display,
     prettyTime = false,
+    output = Deno.stdout,
   }: constructorOptions = {}) {
     this.title = title;
     this.total = total;
@@ -101,7 +95,7 @@ export default class ProgressBar {
     this.display = display ??
       ":title :percent :bar :time :completed/:total :text";
     this.prettyTime = prettyTime;
-    // Deno.addSignalListener("SIGINT", this.signalListener);
+    this.writer = output.writable.getWriter();
   }
 
   /**
@@ -117,7 +111,7 @@ export default class ProgressBar {
    *   - `prettyTimeOptions` prettyTime options
    */
   async render(completed: number, options: renderOptions = {}): Promise<void> {
-    if (this.#end || !hasStdout) return;
+    if (this.#end || !isTerminal) return;
 
     if (completed < 0) {
       throw new Error(`completed must greater than or equal to 0`);
@@ -206,7 +200,6 @@ export default class ProgressBar {
    * No need to call in most cases, unless you want to end before 100%
    */
   async end(): Promise<void> {
-    // Deno.removeSignalListener("SIGINT", this.signalListener);
     if (this.#end) return;
     this.#end = true;
     if (this.clear) {
@@ -252,13 +245,10 @@ export default class ProgressBar {
     switch (direction) {
       case Direction.all:
         return this.stdoutWrite("\x1b[2K");
-      // break;
       case Direction.left:
         return this.stdoutWrite("\x1b[1K");
-      // break;
       case Direction.right:
         return this.stdoutWrite("\x1b[0K");
-        // break;
     }
   }
 

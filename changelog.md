@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.5.0 - 2024.04.02
+[Allow to configure the writer to something other than stdout](https://github.com/deno-library/progress/issues/30)
+
 ### v1.4.9 - 2024.04.02
 
 [Both JSR and HTTPS are supported](https://github.com/deno-library/progress/issues/29)
