@@ -1,4 +1,6 @@
 import { bgGreen, bgWhite, stripAnsiCode } from "./deps.ts";
+import { writeAll } from "./deps.ts";
+// import type { Writer } from "./deps.ts";
 import { prettyTime, type prettyTimeOptions } from "./time.ts";
 
 const isTerminal = Deno.stdout.isTerminal;
@@ -50,7 +52,9 @@ export class MultiProgressBar {
   private start = Date.now();
   private lastRenderTime = 0;
   private encoder = new TextEncoder();
-  private writer: WritableStreamDefaultWriter<Uint8Array>;
+  // private writer: WritableStreamDefaultWriter<Uint8Array>;
+  // private writer: Writer;
+  private writer: typeof Deno.stdout | typeof Deno.stderr;
 
   /**
    * Title, total, complete, incomplete, can also be set or changed in the render method
@@ -87,7 +91,8 @@ export class MultiProgressBar {
     this.interval = interval ?? 16;
     this.display = display ?? ":bar :text :percent :time :completed/:total";
     this.prettyTime = prettyTime;
-    this.writer = output.writable.getWriter();
+    // this.writer = output.writable.getWriter();
+    this.writer = output;
   }
 
   /**
@@ -199,7 +204,7 @@ export class MultiProgressBar {
       await this.breakLine();
     }
     await this.showCursor();
-    this.writer.releaseLock();
+    // this.writer.releaseLock();
   }
 
   /**
@@ -234,7 +239,8 @@ export class MultiProgressBar {
   }
 
   private stdoutWrite(msg: string): Promise<void> {
-    return this.writer.write(this.encoder.encode(msg));
+    // return this.writer.write(this.encoder.encode(msg));
+    return writeAll(this.writer, this.encoder.encode(msg))
   }
 
   private showCursor(): Promise<void> {
