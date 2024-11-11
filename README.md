@@ -1,5 +1,7 @@
 # ProgressBar
 
+[![JSR Version](https://jsr.io/badges/@deno-library/progress)](https://jsr.io/@deno-library/progress)
+
 ProgressBar in terminal for deno
 
 ![logo](screenshots/logo.png)
