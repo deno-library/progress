@@ -1,8 +1,10 @@
 # ProgressBar
 
-[![JSR Version](https://jsr.io/badges/@deno-library/progress)](https://jsr.io/@deno-library/progress)
-
 ProgressBar in terminal for deno
+  
+[![JSR Version](https://jsr.io/badges/@deno-library/progress)](https://jsr.io/@deno-library/progress)
+[![deno.land/x/progress](https://deno.land/badge/progress/version)](https://deno.land/x/progress)
+[![LICENSE](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/deno-library/progress/blob/main/LICENSE)
 
 ![logo](screenshots/logo.png)
 
