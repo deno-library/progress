@@ -394,3 +394,11 @@ Log some messages next to the bar
 ![console](./screenshots/info.gif)
 
 More screenshots in the `screenshots` folder.
+
+## Contributors
+
+<a href="https://github.com/deno-library/progress/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=deno-library/progress" />
+</a>
+
+Thanks for their contributions!
